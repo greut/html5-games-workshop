@@ -23,7 +23,7 @@
 <p>Comme pour les images, il y a une méthode pour créer des <em>sprites</em> (dans ce cas des <code>Phaser.Sprite</code>) et les ajouter automatiquement</p>
 <p>Comment séparer la logique du jeu, d&#39;une carte et de notre jeu? L&#39;idée est d&#39;utiliser des fichiers <strong>JSON</strong> représentant chaque niveau. Le répertoire <code>data</code> en contient deux pour débuter.</p>
 <p><small>Idéalement ces fichiers sont à générer à l&#39;aide d&#39;un éditeur <em>ad hoc</em>, tel que Tiled.</small></p>
-<p>Si vous ouvrez un de ces fichiers, on peut y voir les plateformes.</p>
+<p>Si vous ouvrez un de ces fichiers, on peut y voir les plateformes stockées dans un tableau (<code>[]</code>).</p>
 <pre><code class="lang-javascript">{
     &quot;platforms&quot;: [
         {&quot;image&quot;: &quot;ground&quot;, &quot;x&quot;: 0, &quot;y&quot;: 546},
@@ -34,10 +34,60 @@
 </code></pre>
 <h1 id="t-ches">Tâches</h1>
 <h2 id="charger-les-donn-es-des-niveaux">Charger les données des niveaux</h2>
-<p>...</p>
+<ol>
+<li><p>Phaser considère les fichiers JSON comme un type d&#39;asset, tel qu&#39;une image. Nous devons donc précharger le fichier de manière similaire.</p>
+<pre><code class="lang-javascript">PlayState.preload = function () {
+ // ...
+ this.game.load.json(&#39;level:1&#39;, &#39;data/level01.json&#39;);
+};
+</code></pre>
+<p>Comme pour l&#39;image, on donne un nom à l&#39;élément pour pouvoir s&#39;en reservir par la suite.</p>
+</li>
+<li><p>À présent, pour pouvons y accéder dans l&#39;étape <code>create</code>.</p>
+<pre><code class="lang-javascript">PlayState.create = function () {
+ //...
+ this.loadLevel(this.game.cache.getJSON(&#39;level:1&#39;));
+};
+
+PlayState.loadLevel = function (data) {
+ console.log(data);
+};
+</code></pre>
+<p><code>console.log()</code> va afficher le contenu du niveau dans la console du développeur qu&#39;on peut afficher depuis la touche F12 du navigateur.</p>
+</li>
+</ol>
 <h2 id="dessiner-les-plateformes-l-aide-de-_sprites_">Dessiner les plateformes à l&#39;aide de <em>sprites</em></h2>
+<ol>
+<li><p>Avant de créer les <em>sprites</em>, nous devons précharger toutes les images requises. Et ceci, va dans l&#39;étape <code>preload</code>.</p>
+<pre><code class="lang-javascript">PlayState.preload = function () {
+ // ...
+ this.game.load.image(&#39;ground&#39;, &#39;images/ground.png&#39;);
+ this.game.load.image(&#39;grass:8x1&#39;, &#39;images/grass_8x1.png&#39;);
+ this.game.load.image(&#39;grass:6x1&#39;, &#39;images/grass_6x1.png&#39;);
+ this.game.load.image(&#39;grass:4x1&#39;, &#39;images/grass_4x1.png&#39;);
+ this.game.load.image(&#39;grass:2x1&#39;, &#39;images/grass_2x1.png&#39;);
+ this.game.load.image(&#39;grass:1x1&#39;, &#39;images/grass_1x1.png&#39;);
+};
+</code></pre>
+</li>
+<li><p>À présent, nous pouvons compléter la méthode de chargement du niveau <code>loadLevel</code> afin de dessiner les plateformes. Le tableau de plateformes se parcourse à l&#39;aide d&#39;un <code>forEach</code>. Le <code>this</code> tout seul est lié à comment JavaScript fonctionne en interne.</p>
+<pre><code class="lang-javascript">PlayState.loadLevel = function (data) {
+ data.platforms.forEach(this.spawnPlatform, this);
+};
+
+PlayState.spawnPlatform = function(platform) {
+ this.game.add.sprite(platform.x, platform.y, platform.image);
+};
+</code></pre>
+<p>Rafraîchir le navigateur va laisser apparaître les plateformes à l&#39;écran.</p>
+</li>
+</ol>
+<p><img src="/html5-games-workshop/assets/platformer/step02_check.png" alt="Des plateformes"/></p>
 <h1 id="v-rifications">Vérifications</h1>
-<p>...</p>
+<ul>
+<li>Vous pouvez voir les plateformes dessinées sur la fond d&#39;écran;</li>
+<li>Assurez-vous de bien utiliser <code>game.add.sprite</code> et non <code>game.add.image</code>.</li>
+</ul>
 
         <h2>Téléchargement</h2>
         <p>Êtes-vous bloqué? Jetez un œil <a href="../../../../assets/platformer/steps/step03.js" télécharger="">au code source</a> de cette étape.
