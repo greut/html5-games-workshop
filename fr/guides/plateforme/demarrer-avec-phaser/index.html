@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Atelier jeux HTML5 - Démarrer avec Phaser</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../../../css/styles.css"/>
+    <link rel="stylesheet" href="../../../../vendor/prism/prism.css"/>
+    <script src="../../../../vendor/prism/prism.js"></script>
+  </head>
+  <body>
+    <header class="main-header">
+      <h1><a href="../../..">Atelier jeux HTML5</a></h1>
+    </header>
+    <main>
+      <article>
+        <p>Également disponible en <a href="../../../../en/guides/platformer/initialise-phaser">en</a>.
+        </p>
+        <h1>Démarrer avec Phaser</h1><h1 id="t-ches">Tâches</h1>
+<h2 id="cr-er-le-squelette-du-projet">Créer le squelette du projet</h2>
+<ol>
+<li><p>Créer un répertoire pour votre jeu</p>
+</li>
+<li><p>Télécharger et décompressez le <a href="/html5-games-workshop/assets/platformer/start.zip">projet de base</a>. L&#39;arborescence doit ressembler à celle-ci.</p>
+<pre><code class="lang-bash">jeu
+├── audio
+├── data
+├── images
+├── index.html
+└── js
+</code></pre>
+</li>
+<li><p>Lancer le serveur web local dans le répertoire racine (voir <a href="/html5-games-workshop/fr/guides/installation/">install guide</a> et consulter la page dans un navigateur.</p>
+<p>Si vous utilisez l&#39;éditeur <em>Brackets</em>, le module <em>Aperçu en direct</em> est amplement suffisant.</p>
+</li>
+</ol>
+<h2 id="initialiser-phaser">Initialiser Phaser</h2>
+<ol>
+<li><p>Notre jeu HTML5 va se servir de l&#39;élément <code>&lt;canvas&gt;</code> pour dessiner. Phaser peut en créer un pour nous au démarrage. Il nous faut lui fournir l&#39;élément conteneur ainsi que les dimensions de la zone de dessin (960✕600).</p>
+<p>Pour ce faire, modifier <code>js/main.js</code> et y ajouter la portion suivante qui va initialiser Phaser.</p>
+<pre><code class="lang-javascript">window.onload = function () {
+  let game = new Phaser.Game(960, 600, Phaser.AUTO, &#39;game&#39;);
+};
+</code></pre>
+<p><code>Phaser.AUTO</code> va tenter d&#39;utiliser un contexte de type <em>WebGL</em> plus performant qu&#39;un simple canvas 2D.</p>
+</li>
+<li><p>Rafraîchir le navigateur, un carré noir devrait apparaître.</p>
+<p><img src="/html5-games-workshop/assets/platformer/step00_check.png" alt="Empy canvas on the screen"/></p>
+</li>
+</ol>
+<h1 id="v-rifications">Vérifications</h1>
+<p>Avant de passer à l&#39;étape suivante, vérifiez que:</p>
+<ul>
+<li>Vous pouvez accéder au fichier <code>index.html</code> depuis votre navigateur</li>
+<li>et qu&#39;un carré noir apparait dans la page.</li>
+</ul>
+
+        <h2>Téléchargement</h2>
+        <p>Êtes-vous bloqué? Jetez un œil <a href="../../../../assets/platformer/steps/step01.js" télécharger="">au code source</a> de cette étape.
+        </p>
+        <nav class="paginated-nav">
+          <ul>
+            <li class="previous">« Prédédent:&nbsp;<a href="../demarrer">Démarrer</a></li>
+            <li class="next">Suivant:&nbsp;<a href="../la-boucle-principale">La boucle principale</a>&nbsp;»</li>
+          </ul>
+        </nav>
+      </article>
+    </main>
+    <footer class="main-footer">
+      <p>Propulsé avec amour,<br/>par les fées de chez <a href="https://mozilla.org">Mozilla</a>.</p>
+    </footer>
+  </body>
+</html>

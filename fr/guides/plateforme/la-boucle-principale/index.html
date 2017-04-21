@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<head>
+  <title>HTML5 Games Workshop - La boucle principale</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="../../../../css/styles.css"/>
+  <link rel="stylesheet" href="../../../../vendor/prism/prism.css"/>
+  <script src="../../../../vendor/prism/prism.js"></script>
+</head>
+<body>
+  <header class="main-header">
+    <h1><a href="../../..">HTML5 Games Workshop</a></h1>
+  </header>
+  <main>
+    <article>
+      <p>Also available in <a href="../../../../en/guides/platformer/the-game-loop">en</a>.
+      </p>
+      <h1>La boucle principale</h1><p>Le cœur de tout jeu est composé d&#39;une boucle. Au sein de cette boucle sont traités les évènements externes (souris ou clavier), la modification de l&#39;état du jeu (<code>update</code>) puis le dessin (<code>render</code>).</p>
+<p><img src="/html5-games-workshop/assets/platformer/game_loop.png" alt="The game loop"/></p>
+<p>Au sein de Phaser, la boucle principale est générée automatiquement via les états du jeu. Un état correspond àà un « écran » dans notre jeu. Par exemple, l&#39;écran de chargement, le menu principal, un niveau, etc. Chaque état est divisé en différentes étapes. Les importantes étant les suivantes.</p>
+<p><img src="/html5-games-workshop/assets/platformer/game_state.png" alt="Game state"/></p>
+<p>Les phases <code>update</code> (mise à jour) et <code>render</code> (affichage) sont <strong>appelées</strong> automatiquement à chaque frame, ainsi il ne nous est pas nécessaire de gérer le temps.</p>
+<p>Un état dans Phaser est un <code>Object</code> JavaScript possédant des méthodes spécifiques. Nous allons voir comment précharger et afficher une image de fond.</p>
+<h1 id="t-ches">Tâches</h1>
+<h2 id="cr-er-un-tat">Créer un état</h2>
+<ol>
+<li><p>Comme prédédamment, modifier <code>js/index.js</code> pour y ajouter un état nommé <code>play</code>.</p>
+<pre><code class="lang-javascript">const PlayState = {};
+
+window.onload = function () {
+   let game = new Phaser.Game(960, 600, Phaser.AUTO, &#39;game&#39;);
+   game.state.add(&#39;play&#39;, PlayState);
+   game.state.start(&#39;play&#39;);
+};
+</code></pre>
+</li>
+</ol>
+<h2 id="charger-et-afficher-une-image">Charger et afficher une image</h2>
+<ol>
+<li><p>Afin de <strong>charger une image</strong>, nous allons utiliser la phase <code>preload</code> de notre état. Dans cette phase, toutes les <em>assets</em> (images, sons, etc.) vont être chargés.</p>
+<p>Pour utiliser cette phase, il faut créer une méthode du même nom.</p>
+<pre><code class="lang-javascript">const PlayState = {};
+
+PlayState.preload = function () {
+   this.game.load.image(&#39;background&#39;, &#39;images/background.png&#39;);
+};
+</code></pre>
+<p>Points importants :</p>
+<ol>
+<li>Notre état possède une référence au jeu en cours via la propriété <code>game</code>.</li>
+<li>Au chargement d&#39;un asset, il est possible de lui donner un nom qui est réutilisé par la suite.</li>
+</ol>
+</li>
+<li><p>Pour <strong>afficher une image</strong>, nous devons créer une instance de <code>Phaser.Image</code>. La méthode <code>game.add</code> s&#39;occupe de créer ajouter l&#39;image à notre univers. Ainsi, l&#39;élément est dessiné automatiquement.</p>
+<p>Ajouter la phase <code>create</code> à l&#39;état du jeu.</p>
+<pre><code class="lang-javascript">PlayState.create = function () {
+   this.game.add.image(0, 0, &#39;background&#39;);
+};
+</code></pre>
+<p><code>0, 0</code> correspondent aux coordonnées X et Y. En informatique, contrairement aux mathématiques, l&#39;origine se trouve en haut à gauche, l&#39;axe X va à droite et l&#39;axe Y vers le bas.</p>
+</li>
+</ol>
+<p>Votre page doit afficher un superbe fond d&#39;écran bleuté.</p>
+<p><img src="/html5-games-workshop/assets/platformer/step01_check.png" alt="A background, rendered"/></p>
+<h1 id="v-rifications">Vérifications</h1>
+<ul>
+<li>Un fond d&#39;écran bleuté remplace le fond noir.</li>
+</ul>
+<p>Être capable d&#39;afficher des images est la première étape vers la construction d&#39;un jeu vidéo. Préparez-vous pour les étapes suivantes!</p>
+
+      <h2>Download</h2>
+      <p>Are you stuck? Take a look at <a href="../../../../assets/platformer/steps/step02.js" download="">the source code</a> for this step.
+      </p>
+      <nav class="paginated-nav">
+        <ul>
+          <li class="previous">« Previous:&nbsp;<a href="../demarrer-avec-phaser">Démarrer avec Phaser</a></li>
+          <li class="next">Next:&nbsp;<a href="../creation-des-plateformes">Création des plateformes</a>&nbsp;»</li>
+        </ul>
+      </nav>
+    </article>
+  </main>
+  <footer class="main-footer">
+    <p>With love,<br/>the game dev fairies at <a href="https://mozilla.org">Mozilla</a>.</p>
+  </footer>
+</body>

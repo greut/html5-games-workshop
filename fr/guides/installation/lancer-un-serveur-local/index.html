@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Atelier jeux HTML5 - Lancer un serveur local</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../../../css/styles.css"/>
+    <link rel="stylesheet" href="../../../../vendor/prism/prism.css"/>
+    <script src="../../../../vendor/prism/prism.js"></script>
+  </head>
+  <body>
+    <header class="main-header">
+      <h1><a href="../../..">Atelier jeux HTML5</a></h1>
+    </header>
+    <main>
+      <article>
+        <p>Également disponible en <a href="../../../../en/guides/setup/launch-a-local-server">en</a>.
+        </p>
+        <h1>Lancer un serveur local</h1><p>Pour des raisons de sécurité le navigateur web n&#39;autorise pas le chargement de fichiers externe lorsqu&#39;on consulte une page en utilise le protocole <code>file://</code>. Ainsi, il est nécessaire d&#39;installer un serveur web pour servir notre jeu.</p>
+<p>En fonction des outils à disposition, plusieurs alternatives existes.</p>
+<h1 id="node-js">Node.js</h1>
+<p><a href="https://nodejs.org/">Node.js</a> est un plateforme incontournable dès qu&#39;on fait du développement web utilisant beaucoup de JavaScript.</p>
+<pre><code class="lang-console">$ npm install -g http-server
+$ http-server
+</code></pre>
+<h2 id="une-meilleure-alternative">Une meilleure alternative</h2>
+<p>Le désavantage d&#39;un simple serveur web est qu&#39;il est nécessaire de rechercher manuellement une page pour bénéficier des modifications récentes. Le module <a href="https://www.npmjs.com/package/browser-sync">browser-sync</a> permet de recharger automatiquement la page à chaque modification.</p>
+<pre><code class="lang-console">$ npm install -g browser-sync
+$ browser-sync --start --server --files=&quot;**/*.js&quot;
+</code></pre>
+<h1 id="python-macos-ou-gnu-linux-">Python (macOS ou GNU/Linux)</h1>
+<p>Python est installé par défaut sur plusieurs systèmes d&#39;exploitation et offre par défaut un serveur web.</p>
+<pre><code class="lang-console"># Python 2
+$ python -m SimpleHTTPServer
+
+# Python 3
+$ python -m http.server
+</code></pre>
+<h1 id="wamp">WAMP</h1>
+<p>Si vous avez fait du développement en PHP avec <a href="http://www.wampserver.com/fr/">WAMP</a>, il vous suffit de placer vos fichiers dans le répertoire du serveur web.</p>
+<h1 id="rien-de-tout-a">Rien de tout ça</h1>
+<p>Pas de panique, il y a des alternatives. Certains éditeurs, tel que <a href="http://brackets.io/">Brackets</a>, le font directement.</p>
+
+        <nav class="paginated-nav">
+          <ul>
+            <li class="previous">« Prédédent:&nbsp;<a href="../installation-sur-votre-machine">Installation sur votre machine</a></li>
+          </ul>
+        </nav>
+      </article>
+    </main>
+    <footer class="main-footer">
+      <p>Propulsé avec amour,<br/>par les fées de chez <a href="https://mozilla.org">Mozilla</a>.</p>
+    </footer>
+  </body>
+</html>
