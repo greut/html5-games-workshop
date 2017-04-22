@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Atelier jeux HTML5 - Le caractère principal</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../../../css/styles.css"/>
+    <link rel="stylesheet" href="../../../../vendor/prism/prism.css"/>
+    <script src="../../../../vendor/prism/prism.js"></script>
+  </head>
+  <body>
+    <header class="main-header">
+      <h1><a href="../../..">Atelier jeux HTML5</a></h1>
+    </header>
+    <main>
+      <article>
+        <p>Également disponible en <a href="../../../../en/guides/platformer/the-main-character-sprite">en</a>.
+        </p>
+        <h1>Le caractère principal</h1><p>Le héro ou héroïne ne notre jeu sera un autre <strong>sprite</strong>. Cependant ce sprite est plus complexe que les plateformes. Il y a plus de logiques associées au joueur comme le déplacement, le saut, etc.</p>
+<p>Il semblerait judicieux d&#39;ajouter des méthodes comme sauter (<code>jump</code>) ou se déplacer (<code>move</code>). On fait ceci est dérivant (appelé héritage) <code>Phaser.Sprite</code>.</p>
+<p>En JavaScript, le patron de conception suivant utilisé. Imaginons que nous devions créer une classe voiture (<code>Car</code>) spécialisant une classe véhicule (<code>Vehicle</code>).</p>
+<pre><code class="lang-javascript">function Car() {
+    // call parent constructor
+    Vehicle.call(this);
+}
+
+// clone Vehicle&#39;s prototype into Car
+Car.prototype = Object.create(Vehicle.prototype);
+// restore the constructor at Car
+Car.prototype.constructor = Car;
+</code></pre>
+<p>Nous allons nous en servir pour spécialiser <code>Phaser.Sprite</code>.</p>
+<h1 id="t-ches">Tâches</h1>
+<h2 id="charger-l-image-du-h-ro">Charger l&#39;image du héro</h2>
+<ol>
+<li><p>Dans l&#39;étape <code>preload</code>, ajouter le chargement de l&#39;image <code>hero_stopped.png</code>.</p>
+<pre><code class="lang-javascript">PlayState.preload = function () {
+   // ...
+   this.game.load.image(&#39;hero&#39;, &#39;images/hero_stopped.png&#39;);
+};
+</code></pre>
+<h3 id="sp-cialiser-phaser-sprite-">Spécialiser <code>Phaser.Sprite</code></h3>
+</li>
+<li><p>Ajoutez la définition du héro dans <code>main.js</code>. On suit le patron d&#39;héritage utilisé en JavaScript.</p>
+<pre><code class="lang-javascript">function Hero(game, x, y, image) {
+   // Appel le constructeur de Phaser.Sprite
+   Phaser.Sprite.call(this, game, x, y, &#39;hero&#39;);
+}
+
+// inherit from Phaser.Sprite
+Hero.prototype = Object.create(Phaser.Sprite.prototype);
+Hero.prototype.constructor = Hero;
+</code></pre>
+</li>
+</ol>
+<h2 id="afficher-le-h-ro-la-cr-ation">Afficher le héro à la création</h2>
+<ol>
+<li><p>Comme pour les plateformes, la position du héro est donnée dans le fichier JSON. Nous créons une nouvelle méthode permettant d&#39;afficher les caractères.</p>
+<pre><code class="lang-javascript">PlayState.loadLevel = function (data) {
+  //...
+  this.spawnCharacters({hero: data.hero});
+};
+</code></pre>
+<pre><code class="lang-javascript">PlayState.spawnCharacters = function (data) {
+  this.hero = new Hero(this.game, data.hero.x, data.hero.y, &#39;hero&#39;);
+  this.game.add.existing(this.hero);
+};
+</code></pre>
+</li>
+<li><p>Après rafraichissement de la page, le personnage apparait... cependant il semble mal positionné.</p>
+<p><img src="/html5-games-workshop/assets/platformer/hero_bad_position.png" alt="Un héro mal positionné"/></p>
+</li>
+<li><p>Phaser gère le positionnement d&#39;un <em>sprite</em> à l&#39;aide d&#39;un ancre (<code>anchor</code>). C&#39;est un vecteur x, y allant de 0 à 1 (gauche - droite, haut - bas). Afin de center le héro, il faut le placer à la position <code>(0.5, 0.5)c)</code>. Modifier le constructeur du héro de la manière suivante.</p>
+<pre><code class="lang-javascript">function Hero(game, x, y) {
+  // ...
+  this.anchor.set(0.5, 0.5);
+}
+</code></pre>
+</li>
+</ol>
+<p>Et voilà, le héro à désormais les pieds sur terre.</p>
+<p><img src="/html5-games-workshop/assets/platformer/step03_check.png" alt="Hero positioned correctly in the scenario"/></p>
+<h1 id="v-rifications">Vérifications</h1>
+<ul>
+<li>Il y a un personnage sur le sol positionné en bas à gauche du niveau.</li>
+</ul>
+
+        <h2>Téléchargement</h2>
+        <p>Êtes-vous bloqué? Jetez un œil <a href="../../../../assets/platformer/steps/step04.js" télécharger="">au code source</a> de cette étape.
+        </p>
+        <nav class="paginated-nav">
+          <ul>
+            <li class="previous">« Prédédent:&nbsp;<a href="../creation-des-plateformes">Création des plateformes</a></li>
+            <li class="next">Suivant:&nbsp;<a href="../../../../en/guides/platformer/keyboard-controls">Keyboard controls</a>&nbsp;»</li>
+          </ul>
+        </nav>
+      </article>
+    </main>
+    <footer class="main-footer">
+      <p>Propulsé avec amour,<br/>par les fées de chez <a href="https://mozilla.org">Mozilla</a>.</p>
+    </footer>
+  </body>
+</html>
