@@ -69,7 +69,7 @@ Hero.prototype.move = function (direction) {
 <h2 id="fix-a-tiny-glitch">Fix a tiny glitch</h2>
 <ol>
 <li><p>If your sight is sharp you may have noticed the following glitch when moving the character:</p>
-<p><img src="/assets/platformer/blurry_hero.png" alt="Blurry hero sprite"/></p>
+<p><img src="/html5-games-workshop/assets/platformer/blurry_hero.png" alt="Blurry hero sprite"/></p>
 <p>Do you see it? The hero sprite sometimes appear blurry, specially when compared to the background and platforms.</p>
 <p>This is due to an anti-aliasing technique performed when drawing an image in not round coordinates (for instance, <code>100.27</code> instead of <code>100</code>). For most games it is OK because it allows for smoother movements, but since this game uses pixel art, it doesn&#39;t look nice when it&#39;s blurred, even slightly.</p>
 <p>Fortunately for us, there is a way in Phaser to force the rendering system to round the position values when drawing images.</p>

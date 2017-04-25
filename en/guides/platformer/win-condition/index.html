@@ -17,7 +17,7 @@
 <p>We are going to add two elements to the level: a <strong>door</strong> and a <strong>key</strong>. The goal of the game would be to fetch the key and then go back to the door and open it to advance to the next level. We will also add an <strong>icon</strong> next to the coin scoreboard to display whether the key has been picked up yet or not.</p>
 <p>In the JSON file there is already the data of where the door and the key should be placed.</p>
 <p>Here&#39;s how the whole thing will look like:</p>
-<p><img src="/assets/platformer/win_condition.png" alt="Level with the win condition elements"/></p>
+<p><img src="/html5-games-workshop/assets/platformer/win_condition.png" alt="Level with the win condition elements"/></p>
 <h2 id="tasks">Tasks</h2>
 <h3 id="create-the-door">Create the door</h3>
 <ol>
@@ -57,7 +57,7 @@
 </code></pre>
 </li>
 <li><p>Load the game in the browser and see how the door has been created:</p>
-<p> <img src="/assets/platformer/door_spawned.png" alt="Door"/></p>
+<p> <img src="/html5-games-workshop/assets/platformer/door_spawned.png" alt="Door"/></p>
 </li>
 </ol>
 <h3 id="create-the-key">Create the key</h3>
@@ -90,7 +90,7 @@
 </code></pre>
 </li>
 <li><p>Now you should be able to see the key at the top right region of the screen!</p>
-<p> <img src="/assets/platformer/key_spawned.png" alt="Static key"/></p>
+<p> <img src="/html5-games-workshop/assets/platformer/key_spawned.png" alt="Static key"/></p>
 </li>
 </ol>
 <h3 id="implement-the-win-condition">Implement the win condition</h3>
@@ -178,7 +178,7 @@
 <p> The tween above will move the key up and down slightly, continuously. If you want more information about tweens, or want to tweak it, you can check out Phaser&#39;s <a href="http://phaser.io/docs/2.6.2/Phaser.Tween.html">documentation</a> or <a href="http://phaser.io/examples/v2/category/tweens">the examples</a>.</p>
 </li>
 <li><p>Load the game and you should be able to see the animation in place.</p>
-<p> <img src="/assets/platformer/key_tween.gif" alt="Key tweening"/></p>
+<p> <img src="/html5-games-workshop/assets/platformer/key_tween.gif" alt="Key tweening"/></p>
 </li>
 </ol>
 <h3 id="add-the-key-icon">Add the key icon</h3>
@@ -209,7 +209,7 @@
 </code></pre>
 </li>
 <li><p>If you load the game you will be able to see the icon!</p>
-<p> <img src="/assets/platformer/key_icon_empty.png" alt="Key icon (empty frame)"/></p>
+<p> <img src="/html5-games-workshop/assets/platformer/key_icon_empty.png" alt="Key icon (empty frame)"/></p>
 </li>
 <li><p>Now we need to change the frame of the spritesheet depending on whether the key has been picked up or not. With sprites, we have used animations before to handle spritesheets, but since this is not an animation and we don&#39;t need to control the timing, we can just use the <code>frame</code> property to select the frame index we want:</p>
 <pre><code class="lang-js"> PlayState.update = function () {
@@ -219,7 +219,7 @@
 </code></pre>
 </li>
 <li><p>Play the level again, pick up the key and… ta-da!</p>
-<p> <img src="/assets/platformer/key_icon_filled.png" alt="Key icon (filled)"/></p>
+<p> <img src="/html5-games-workshop/assets/platformer/key_icon_filled.png" alt="Key icon (filled)"/></p>
 </li>
 </ol>
 <h2 id="checklist">Checklist</h2>

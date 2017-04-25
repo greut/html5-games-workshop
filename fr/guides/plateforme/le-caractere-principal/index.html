@@ -68,7 +68,7 @@ Hero.prototype.constructor = Hero;
 </code></pre>
 </li>
 <li><p>Après rafraichissement de la page, le personnage apparait... cependant il semble mal positionné.</p>
-<p><img src="/assets/platformer/hero_bad_position.png" alt="Un héro mal positionné"/></p>
+<p><img src="/html5-games-workshop/assets/platformer/hero_bad_position.png" alt="Un héro mal positionné"/></p>
 </li>
 <li><p>Phaser gère le positionnement d&#39;un <em>sprite</em> à l&#39;aide d&#39;un ancre (<code>anchor</code>). C&#39;est un vecteur x, y allant de 0 à 1 (gauche - droite, haut - bas). Afin de center le héro, il faut le placer à la position <code>(0.5, 0.5)c)</code>. Modifier le constructeur du héro de la manière suivante.</p>
 <pre><code class="lang-javascript">function Hero(game, x, y) {
@@ -79,7 +79,7 @@ Hero.prototype.constructor = Hero;
 </li>
 </ol>
 <p>Et voilà, le héro à désormais les pieds sur terre.</p>
-<p><img src="/assets/platformer/step03_check.png" alt="Hero positioned correctly in the scenario"/></p>
+<p><img src="/html5-games-workshop/assets/platformer/step03_check.png" alt="Hero positioned correctly in the scenario"/></p>
 <h1 id="v-rifications">Vérifications</h1>
 <ul>
 <li>Il y a un personnage sur le sol positionné en bas à gauche du niveau.</li>

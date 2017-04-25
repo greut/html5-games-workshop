@@ -72,7 +72,7 @@ Car.prototype.constructor = Car;
 </code></pre>
 </li>
 <li><p>Check how it looks like. You should see the hero… not in a very good position:</p>
-<p> <img src="/assets/platformer/hero_bad_position.png" alt="Bad-positioned hero"/></p>
+<p> <img src="/html5-games-workshop/assets/platformer/hero_bad_position.png" alt="Bad-positioned hero"/></p>
 <p> Why is this? Is the level data wrong? What happens is that, <em>usually</em>, we&#39;d like sprites to be <strong>handled by their center</strong>. This helps in operations like rotations, flipping, etc. and it&#39;s also more intuitive. Let&#39;s fix this.</p>
 </li>
 <li><p>In Phaser, the point where we handle sprites and images is called <strong><code>anchor</code></strong>. It&#39;s a vector, and it accepts values in the <code>0</code> (left) to <code>1</code> (right) range. So the central point would be <code>(0.5, 0.5)</code>. Modify the <code>Hero</code> constructor to set up the anchor:</p>
@@ -84,7 +84,7 @@ Car.prototype.constructor = Car;
 </li>
 </ol>
 <p>Refresh the browser again and you should see the hero positioned just over the ground:</p>
-<p><img src="/assets/platformer/step03_check.png" alt="Hero positioned correctly in the scenario"/></p>
+<p><img src="/html5-games-workshop/assets/platformer/step03_check.png" alt="Hero positioned correctly in the scenario"/></p>
 <h2 id="checklist">Checklist</h2>
 <ul>
 <li>There is a hero sprite over the ground, on the bottom left part of the level.</li>

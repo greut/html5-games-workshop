@@ -64,7 +64,7 @@
 <h2 id="probl-me-d-_antialiasing_">Problème d&#39;<em>antialiasing</em></h2>
 <ol>
 <li><p>Avec un œil de lynx, on peut distinguer que le héros et tantôt un peu flouté lorsqu&#39;il se déplace.</p>
-<p><img src="/assets/platformer/blurry_hero.png" alt="Blurry hero sprite"/></p>
+<p><img src="/html5-games-workshop/assets/platformer/blurry_hero.png" alt="Blurry hero sprite"/></p>
 <p>Ceci est dû à l&#39;<em>anti-aliasing</em>, une technique utilisée pour dessiner des images dans un système de coordonnées flottant (comme <code>100.27</code> au lieu de <code>100</code>). Pour la plupart des jeux, ce résultat est désiré pour un rendu plus lisse. Mais dans un jeu utilisant le style <em>pixel art</em>, c&#39;est n&#39;est pas ok d&#39;avoir des flous, même légèrement.</p>
 <p>Heureusement pour nous, il existe un moyen de forcer Phaser à arrondir le dessin des images.</p>
 <p>Ceci peut se faire dans la phase d&#39;initialisation <code>init</code> étant donné qu&#39;elle est exécutée avant les autres.</p>

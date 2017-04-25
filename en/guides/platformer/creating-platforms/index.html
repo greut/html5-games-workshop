@@ -18,7 +18,7 @@
       <h1>Creating platforms</h1><p>A platformer game needs… platforms, right? There are multiple techniques to handling platforms and the physics related to them. In this workshop, we will consider the platforms as <strong>sprites</strong>, like other characters in the game.</p>
 <p><small>There are more efficient and flexible ways to do this, but for a one-screen platformer, this one is performant enough and, more importantly, the <em>most simple way</em>.</small></p>
 <p>This is how some of the platforms look like (a 4✕1 and a 1✕1):</p>
-<p><img src="/assets/platformer/grass_4x1.png" alt="4x1 grass platform"/> <img src="/assets/platformer/grass_1x1.png" alt="1x1 grass platform"/></p>
+<p><img src="/html5-games-workshop/assets/platformer/grass_4x1.png" alt="4x1 grass platform"/> <img src="/html5-games-workshop/assets/platformer/grass_1x1.png" alt="1x1 grass platform"/></p>
 <p>As with images, there is a factory method to create <strong>sprites</strong> (in this case, instances of <a href="http://phaser.io/docs/2.6.2/Phaser.Sprite.html"><code>Phaser.Sprite</code></a>) and add them automatically to the game world.</p>
 <p>But <em>where</em> to place the platforms? We could hardcode the whole thing, but in the long run it&#39;s better to have the level data in a separate file that we can load. We have some <strong>level data as JSON</strong> files in the <code>data/</code> folder.</p>
 <p><small>Ideally, these files would be generated with a level editor tool, but you can add more levels to the game after the workshop by creating your own JSON files!</small></p>
@@ -81,7 +81,7 @@
 </li>
 </ol>
 <p>Refresh your browser and you should see our platform sprites!</p>
-<p><img src="/assets/platformer/step02_check.png" alt="Platform sprites"/></p>
+<p><img src="/html5-games-workshop/assets/platformer/step02_check.png" alt="Platform sprites"/></p>
 <h2 id="checklist">Checklist</h2>
 <ul>
 <li>You can see platforms rendered over the background</li>
