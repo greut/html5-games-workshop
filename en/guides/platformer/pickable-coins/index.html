@@ -13,9 +13,11 @@
   </header>
   <main>
     <article>
+      <p>Also available in <a href="../../../../fr/guides/plateforme/passe-la-monnaie">fr</a>.
+      </p>
       <h1>Pickable coins</h1><p>We have the core game mechanic –jumping– in place, so it&#39;s time to make the game more attractive and fun. We will add some coins for the main character to <strong>pick up</strong>. These coins will also be <strong>animated</strong>, so we will learn how to animate sprites.</p>
 <p>In Phaser, animations are <strong>keyframe-based</strong>. This means that the sprite will change the image it&#39;s displaying periodically, and thus we will see it animated. If you have worked with CSS before, does this sound familiar?</p>
-<p><img src="/html5-games-workshop/assets/platformer/coin_spritesheet.png" alt="Coin spritesheet"/></p>
+<p><img src="/assets/platformer/coin_spritesheet.png" alt="Coin spritesheet"/></p>
 <p>This is our coin&#39;s <strong>spritesheet</strong>, and Phaser makes really easy to work with them and use them for animations.</p>
 <p><small>Yup, CSS borrowed the name for the image technique from game development!</small></p>
 <p>To collect the coins we will <strong>detect when the main character has touched</strong> any of them. The Arcade physics engine will assist us to do so, but we will another method, <code>overlap</code>, instead of <code>collide</code>. Why? <code>collide</code> actually <em>resolves</em> collisions, by separating the bodies so objects don&#39;t go through other objects: this allows for behaviours such as bouncing, pushing, blocking, etc. However we don&#39;t want the coins to <em>block</em> the character, so we will merely perform a <strong>hit test</strong> and see if the character&#39;s body is overlapping a coin&#39;s body.</p>
@@ -55,7 +57,7 @@
 </code></pre>
 </li>
 <li><p>This is a good point to see if it&#39;s working in the browser. You should be able to see some –still static!– coins spawned through all the level.</p>
-<p> <img src="/html5-games-workshop/assets/platformer/static_coins.png" alt="Static coins"/></p>
+<p> <img src="/assets/platformer/static_coins.png" alt="Static coins"/></p>
 </li>
 </ol>
 <h3 id="add-an-animation-">Add an animation!</h3>
@@ -69,7 +71,7 @@
 </code></pre>
 </li>
 <li><p>Reload the browser and you should see the coins animated like this:</p>
-<p> <img src="/html5-games-workshop/assets/platformer/animated_coin.gif" alt="Animated coin"/></p>
+<p> <img src="/assets/platformer/animated_coin.gif" alt="Animated coin"/></p>
 </li>
 </ol>
 <h3 id="make-the-character-pick-up-coins">Make the character pick up coins</h3>

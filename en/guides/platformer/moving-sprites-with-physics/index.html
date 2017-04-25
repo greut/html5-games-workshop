@@ -13,6 +13,8 @@
   </header>
   <main>
     <article>
+      <p>Also available in <a href="../../../../fr/guides/plateforme/utilisation-de-la-physique">fr</a>.
+      </p>
       <h1>Moving sprites with physics</h1><p>It&#39;s always a good idea to tie movement to <em>time</em>. Previously we just set the character to move a fixed amount <em>per frame</em>, but we are ignoring how many frames per second our game is executing!</p>
 <p>We could handle movements manually by querying for the <strong>delta time</strong> (the time that has elapsed between this frame an the previous one), but Phaser offer us a more convenient way: the use of a <strong>Physics engine</strong>.</p>
 <p>Physics engines are usually expensive in terms of computation, but Phaser has implemented a very fast and small engine named Arcade Physics. It is very limited in features, but it&#39;s enough to handle a platformer game like ours –and we will not get a performance hit!</p>

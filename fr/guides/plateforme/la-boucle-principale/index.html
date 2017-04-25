@@ -16,9 +16,9 @@
       <p>Also available in <a href="../../../../en/guides/platformer/the-game-loop">en</a>.
       </p>
       <h1>La boucle principale</h1><p>Le cœur de tout jeu est composé d&#39;une boucle. Au sein de cette boucle sont traités les évènements externes (souris ou clavier), la modification de l&#39;état du jeu (<code>update</code>) puis le dessin (<code>render</code>).</p>
-<p><img src="/html5-games-workshop/assets/platformer/game_loop.png" alt="The game loop"/></p>
+<p><img src="/assets/platformer/game_loop.png" alt="The game loop"/></p>
 <p>Au sein de Phaser, la boucle principale est générée automatiquement via les états du jeu. Un état correspond àà un « écran » dans notre jeu. Par exemple, l&#39;écran de chargement, le menu principal, un niveau, etc. Chaque état est divisé en différentes étapes. Les importantes étant les suivantes.</p>
-<p><img src="/html5-games-workshop/assets/platformer/game_state.png" alt="Game state"/></p>
+<p><img src="/assets/platformer/game_state.png" alt="Game state"/></p>
 <p>Les phases <code>update</code> (mise à jour) et <code>render</code> (affichage) sont <strong>appelées</strong> automatiquement à chaque frame, ainsi il ne nous est pas nécessaire de gérer le temps.</p>
 <p>Un état dans Phaser est un <code>Object</code> JavaScript possédant des méthodes spécifiques. Nous allons voir comment précharger et afficher une image de fond.</p>
 <h1 id="t-ches">Tâches</h1>
@@ -61,7 +61,7 @@ PlayState.preload = function () {
 </li>
 </ol>
 <p>Votre page doit afficher un superbe fond d&#39;écran bleuté.</p>
-<p><img src="/html5-games-workshop/assets/platformer/step01_check.png" alt="A background, rendered"/></p>
+<p><img src="/assets/platformer/step01_check.png" alt="A background, rendered"/></p>
 <h1 id="v-rifications">Vérifications</h1>
 <ul>
 <li>Un fond d&#39;écran bleuté remplace le fond noir.</li>

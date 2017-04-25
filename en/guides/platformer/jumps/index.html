@@ -13,6 +13,8 @@
   </header>
   <main>
     <article>
+      <p>Also available in <a href="../../../../fr/guides/plateforme/sauts">fr</a>.
+      </p>
       <h1>Jumps</h1><p>Once we have gravity in place, making the main character to jump is almost trivial! If you remember physics class in school, a parabolic movement needs downward gravity applied to a body (we already did that in the previous step) and then some speed applied at the initial moment upwards so the body goes up and down in a <strong>parabola</strong>.</p>
 <p>We will make the main character to jump when the player presses the up arrow key. We will also play a sound effect when this happens, since <strong>audio is crucial</strong> –even more than graphics– to provide feedback to the user!</p>
 <h2 id="tasks">Tasks</h2>
@@ -41,7 +43,7 @@
 <ol>
 <li><p>Let&#39;s implement the <code>jump</code> method for <code>Hero</code>:</p>
 <pre><code class="lang-js"> Hero.prototype.jump = function () {
-     const JUMP_SPEED = 600;
+     const JUMP_SPEED = 600;i
      this.body.velocity.y = -JUMP_SPEED;
  };
 </code></pre>
@@ -96,7 +98,7 @@
 </li>
 </ol>
 <p>Try it out in the browser. With a bit of skill, you should be able to jump to reach all the platforms in the level.</p>
-<p><img src="/html5-games-workshop/assets/platformer/hero_jump.gif" alt="Main character jumping"/></p>
+<p><img src="/assets/platformer/hero_jump.gif" alt="Main character jumping"/></p>
 <h2 id="checklist">Checklist</h2>
 <ul>
 <li>The character can jump!</li>

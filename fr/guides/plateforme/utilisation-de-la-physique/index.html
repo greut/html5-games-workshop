@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Atelier jeux HTML5 - Utilisation de la physique</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../../../css/styles.css"/>
+    <link rel="stylesheet" href="../../../../vendor/prism/prism.css"/>
+    <script src="../../../../vendor/prism/prism.js"></script>
+  </head>
+  <body>
+    <header class="main-header">
+      <h1><a href="../../..">Atelier jeux HTML5</a></h1>
+    </header>
+    <main>
+      <article>
+        <p>Également disponible en <a href="../../../../en/guides/platformer/moving-sprites-with-physics">en</a>.
+        </p>
+        <h1>Utilisation de la physique</h1><p>Dans les étapes précédentes, nous avons lié le mouvement à une valeur par image. Ce qui signifie que la vitesse du héros est liée à la fréquence de rafraîchissement du jeu. Le nombre d&#39;images par seconde. Cependant, il serait plus judicieux d&#39;utiliser le temps.</p>
+<p>Nous pourrions le faire à la main en calculant la <strong>différence de temps</strong> entre deux images, mais Phaser nous offre une solution bien plus élégante : <strong>un moteur physique</strong>.</p>
+<p>Les moteurs physiques sont généralement très coûteux en termes de calculs. Phaser utilise une solution petite et très rapide nommée Arcade Physics. Bien que limité à des formes rectangulaires sans rotation, il sera amplement suffisant pour les besoins d&#39;un jeu comme le nôtre et sans créer de dégradation de performance.</p>
+<p>Nous utiliserons le moteur physique pour gérer les déplacements, mais aussi, par la suite, la gravité, les collisions, etc.</p>
+<p>Le point crucial à prendre en compte est que chaque sprite possède un corps physique <code>body</code>, et ce corps est déplaclé, tourné, etc. par le moteur. Phaser va automatiquement mettre à jour les propriétés de l&#39;objet comme sa position (<code>x, y</code>) nous évitant d&#39;avoir à le faire.</p>
+<h1 id="t-ches">Tâches</h1>
+<h2 id="ajouter-un-corps-physique-au-h-ros">Ajouter un corps physique au héros</h2>
+<ol>
+<li><p>Pour ce faire, il suffit d&#39;activer <code>enable</code> la physique du <em>sprite</em>.</p>
+<pre><code class="lang-js"> function Hero(game, x, y) {
+     // ...
+     this.game.physics.enable(this);
+ }
+</code></pre>
+</li>
+<li><p>La méthode de délacement <code>move</code> travaillant sur la position. Nous allons à présent laisser le moteur physique gérer celà pour nous et simplement agir sur la vitesse de déplacement.</p>
+<pre><code class="lang-js"> Hero.prototype.SPEED = 200;
+
+ Hero.prototype.move = function (direction) {
+     this.body.velocity.x = direction * this.SPEED;
+ };
+</code></pre>
+</li>
+<li>Essayez dans le navigateur! Il bouge, oui? Mais il ne s&#39;arrête pas.</li>
+</ol>
+<h2 id="stopper-le-h-ros">Stopper le héros</h2>
+<ol>
+<li><p>À présent que le héros possède une vitesse, il est important de remettre cette vitesse à zéro quand aucune touche n&#39;est enfoncée.</p>
+<pre><code class="lang-js"> PlayState.handleInput = function () {
+     if (this.keys.left.isDown) {
+         // ...
+     }
+     else if (this.keys.right.isDown) {
+         // ...
+     }
+     else {
+         this.hero.move(0);
+     }
+ };
+</code></pre>
+</li>
+</ol>
+<h2 id="contraindre-la-h-ros-aux-limites-de-l-cran">Contraindre la héros aux limites de l&#39;écran</h2>
+<ol>
+<li><p>Un avant-goût de ce qu&#39;un moteur physique peut faire pour nous presque gratuîtement est d&#39;empêcher le héros de sortir des limites de l&#39;écran. Dans Phaser, ceci se fait en activant un drapeau sur le corps physique. Modifiez donc le constructeur du héros pour activer la collision avec les limites du monde (<code>collideWorldBounds</code>).</p>
+<pre><code class="lang-js"> function Hero(game, x, y) {
+     // ...
+     this.body.collideWorldBounds = true;
+ }
+</code></pre>
+</li>
+</ol>
+<h1 id="v-rifications">Vérifications</h1>
+<ul>
+<li>Le héro se déplace toujours à gauche ou droite à l&#39;aide des flèches</li>
+<li>Il stoppe au relâchement des touches</li>
+<li>Il ne peut sortir de l&#39;écran</li>
+</ul>
+
+        <h2>Téléchargement</h2>
+        <p>Êtes-vous bloqué? Jetez un œil <a href="../../../../assets/platformer/steps/step06.js" télécharger="">au code source</a> de cette étape.
+        </p>
+        <nav class="paginated-nav">
+          <ul>
+            <li class="previous">« Prédédent:&nbsp;<a href="../controles-au-clavier">Contrôles au clavier</a></li>
+            <li class="next">Suivant:&nbsp;<a href="../gravitation">Gravitation</a>&nbsp;»</li>
+          </ul>
+        </nav>
+      </article>
+    </main>
+    <footer class="main-footer">
+      <p>Propulsé avec amour,<br/>par les fées de chez <a href="https://mozilla.org">Mozilla</a>.</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Atelier jeux HTML5 - Contrôles au clavier</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../../../css/styles.css"/>
+    <link rel="stylesheet" href="../../../../vendor/prism/prism.css"/>
+    <script src="../../../../vendor/prism/prism.js"></script>
+  </head>
+  <body>
+    <header class="main-header">
+      <h1><a href="../../..">Atelier jeux HTML5</a></h1>
+    </header>
+    <main>
+      <article>
+        <p>Également disponible en <a href="../../../../en/guides/platformer/keyboard-controls">en</a>.
+        </p>
+        <h1>Contrôles au clavier</h1><p>La joueuse ou le joueur contrôlera le personnage principal à l&#39;aide du claivier. Pour commencer, il se déplacera à gauche ou à droite en utilisant les flèches du clavier.</p>
+<p>Phaser gère l&#39;état des touches avec des instances de la classe <code>Phaser.Key</code>. Chaque instance est lié à une touche spécifique. Comme tout le clavier ne nous intéresse, nous allors écouter uniquement les touches flèche gauche et droite.</p>
+<h1 id="t-ches">Tâches</h1>
+<h2 id="cr-er-les-instances-de-phaser-key-">Créer les instances de <code>Phaser.Key</code></h2>
+<ol>
+<li><p>La création des <code>Phaser.Key</code> se fait via <a href="http://phaser.io/docs/2.6.2/Phaser.Keyboard.html#addKeys"><code>game.input.keyboard.addKeys</code></a> qui permet d&#39;instancier plusieurs touches à la fois. Nous utilisons la phase <code>init</code> car il n&#39;est pas nécessaire d&#39;avoir les assets chargés avec <code>preload</code>.</p>
+<pre><code class="lang-javascript"> PlayState.init = function () {
+     this.keys = this.game.input.keyboard.addKeys({
+         left: Phaser.KeyCode.LEFT,
+         right: Phaser.KeyCode.RIGHT
+     });
+ };
+</code></pre>
+</li>
+</ol>
+<h2 id="ajouter-le-mouvement-move-au-h-ros">Ajouter le mouvement <code>move</code> au héros</h2>
+<ol>
+<li><p>Ici, nous allons pouvoir bénéficier du fait d&#39;avoir spécialisé le <code>Phaser.Sprite</code> pour le héros. Ajoutez la la méthode déplacer <code>move</code> qui recevra en argument <code>-1</code> pour gauche et <code>1</code> pour droite.</p>
+<pre><code class="lang-javascript"> Hero.prototype = Object.create(Phaser.Sprite.prototype);
+ Hero.prototype.constructor = Hero;
+
+ Hero.prototype.move = function (direction) {
+     this.x += direction * 2.5; // 2.5 pixels each frame
+ };
+</code></pre>
+</li>
+</ol>
+<h2 id="lier-les-touches-et-le-d-placement">Lier les touches et le déplacement</h2>
+<ol>
+<li><p>Rappelez-vous comment <code>update</code> et <code>render</code> opère dans la boucle principale.</p>
+<pre><code class="lang-javascript">PlayState.update = function () {
+   this.handleInput();
+};
+</code></pre>
+<pre><code class="lang-javascript">PlayState.handleInput = function () {
+   if (this.keys.left.isDown) {
+       this.hero.move(-1);
+   }
+   if (this.keys.right.isDown) {
+       this.hero.move(1);
+   }
+};
+</code></pre>
+</li>
+</ol>
+<h2 id="probl-me-d-_antialiasing_">Problème d&#39;<em>antialiasing</em></h2>
+<ol>
+<li><p>Avec un œil de lynx, on peut distinguer que le héros et tantôt un peu flouté lorsqu&#39;il se déplace.</p>
+<p><img src="/assets/platformer/blurry_hero.png" alt="Blurry hero sprite"/></p>
+<p>Ceci est dû à l&#39;<em>anti-aliasing</em>, une technique utilisée pour dessiner des images dans un système de coordonnées flottant (comme <code>100.27</code> au lieu de <code>100</code>). Pour la plupart des jeux, ce résultat est désiré pour un rendu plus lisse. Mais dans un jeu utilisant le style <em>pixel art</em>, c&#39;est n&#39;est pas ok d&#39;avoir des flous, même légèrement.</p>
+<p>Heureusement pour nous, il existe un moyen de forcer Phaser à arrondir le dessin des images.</p>
+<p>Ceci peut se faire dans la phase d&#39;initialisation <code>init</code> étant donné qu&#39;elle est exécutée avant les autres.</p>
+<pre><code class="lang-javascript">PlayState.init = function () {
+   this.game.renderer.renderSession.roundPixels = true;
+   // ...
+};
+</code></pre>
+</li>
+</ol>
+<h1 id="v-rifications">Vérifications</h1>
+<ul>
+<li>Le héros se déplace à gauche ou droite avec les flèches du clavier;</li>
+<li>Le dessin reste précis même après déplacement du héros. Vous pouvez vérifiez en zoomant dans le navigateur (<code>Ctrl</code>-<code>+</code> pour Windows/Linux, ou <code>⌘</code>- <code>+</code> sous macOS)</li>
+</ul>
+
+        <h2>Téléchargement</h2>
+        <p>Êtes-vous bloqué? Jetez un œil <a href="../../../../assets/platformer/steps/step05.js" télécharger="">au code source</a> de cette étape.
+        </p>
+        <nav class="paginated-nav">
+          <ul>
+            <li class="previous">« Prédédent:&nbsp;<a href="../le-caractere-principal">Le caractère principal</a></li>
+            <li class="next">Suivant:&nbsp;<a href="../utilisation-de-la-physique">Utilisation de la physique</a>&nbsp;»</li>
+          </ul>
+        </nav>
+      </article>
+    </main>
+    <footer class="main-footer">
+      <p>Propulsé avec amour,<br/>par les fées de chez <a href="https://mozilla.org">Mozilla</a>.</p>
+    </footer>
+  </body>
+</html>

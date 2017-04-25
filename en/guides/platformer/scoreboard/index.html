@@ -14,14 +14,14 @@
   <main>
     <article>
       <h1>Scoreboard</h1><p>In this step we are going to add a scoreboard that displays how many coins the main character has collected:</p>
-<p><img src="/html5-games-workshop/assets/platformer/coin_scoreboard.png" alt="Coin scoreboard"/></p>
+<p><img src="/assets/platformer/coin_scoreboard.png" alt="Coin scoreboard"/></p>
 <p>In order to do that, we need to be able to <strong>write text</strong> in the screen. In games, this can be done in different ways:</p>
 <ul>
 <li>By using a regular TTF font, like Times New Roman (for HTML5 games this could be a Web Font)</li>
 <li>By using a bitmap font, which is actually a spritesheet, and render the characters one by one like they were images.</li>
 </ul>
 <p>For the scoreboard we will use a bitmap font, which are called in Phaser <strong>retro fonts</strong>. The font will consist only of digits, a blank space and an <code>x</code> character. Here&#39;s the spritesheet:</p>
-<p><img src="/html5-games-workshop/assets/platformer/bitmap_font_sheet.png" alt="Bitmap font spritesheet"/></p>
+<p><img src="/assets/platformer/bitmap_font_sheet.png" alt="Bitmap font spritesheet"/></p>
 <p>It&#39;s important to know that in order to render a text with a bitmap font, we need both an instance of <code>Phaser.RetroFont</code> <em>and</em> an instance of <code>Phaser.Image</code>. Why? The retro font holds the <em>image data</em> in memory (i.e. the pixel values of a rendered text), but then we need a Phaser <em>entity</em> that can make use of that image data, such as <code>Phaser.Image</code> (or even <code>Phaser.Sprite</code>)!</p>
 <h2 id="tasks">Tasks</h2>
 <h3 id="keep-track-of-how-many-coins-have-been-collected">Keep track of how many coins have been collected</h3>
@@ -68,7 +68,7 @@
 </code></pre>
 </li>
 <li><p>Check that the coin icon is rendered at the top left of the screen:</p>
-<p> <img src="/html5-games-workshop/assets/platformer/hud_icon_only.png" alt="HUD with coin icon"/></p>
+<p> <img src="/assets/platformer/hud_icon_only.png" alt="HUD with coin icon"/></p>
 </li>
 </ol>
 <h3 id="write-the-text">Write the text</h3>
@@ -112,7 +112,7 @@
 </li>
 </ol>
 <p>Try it in the browser and see how the text changes with every coin collected!</p>
-<p><img src="/html5-games-workshop/assets/platformer/level_coin_scoreboard.png" alt="Level with coin score board"/></p>
+<p><img src="/assets/platformer/level_coin_scoreboard.png" alt="Level with coin score board"/></p>
 
       <h2>Download</h2>
       <p>Are you stuck? Take a look at <a href="../../../../assets/platformer/steps/step12.js" download="">the source code</a> for this step.

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Atelier jeux HTML5 - Gravitation</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../../../css/styles.css"/>
+    <link rel="stylesheet" href="../../../../vendor/prism/prism.css"/>
+    <script src="../../../../vendor/prism/prism.js"></script>
+  </head>
+  <body>
+    <header class="main-header">
+      <h1><a href="../../..">Atelier jeux HTML5</a></h1>
+    </header>
+    <main>
+      <article>
+        <p>Également disponible en <a href="../../../../en/guides/platformer/gravity">en</a>.
+        </p>
+        <h1>Gravitation</h1><p>L&#39;utilisation d&#39;un moteur facilite la gestion des sauts et de la gravité. À présent, nous allons ajouter la force gravitationnelle au monde. Ainsi, le héros pourra marcher sur les plateformes. Un effet secondaire de ceci est que le héros ne pourra également plus passer à travers les murs.</p>
+<p>Nous pouvons définir la gravitation pour toutes les entités du monde. Dans un jeu de plateforme, on désire que les caractères tels que le héros et les ennemis soient affectée par elle. Cependant, les autres éléments comme les murs ou pièces devraient rester immobiles et non soumise à la gravitation.</p>
+<p>Un élément important que nous introduisons ici est de regrouper les sprites d&#39;un même type ensemble. Dans Phaser, il faut créer une instance de <code>Phaser.Group</code>. À partir de là, nous pouvons gérer les collisions entre éléments individuels, ainsi que vis-à-vis de groupes.</p>
+<h1 id="t-ches">Tâches</h1>
+<h2 id="activer-la-gravitation-globale">Activer la gravitation globale</h2>
+<ol>
+<li><p>Modifier la méthode de chargement du niveau <code>loadLeve</code> pour activer la gravitation.</p>
+<pre><code class="lang-javascript"> const PlayState = {
+     GRAVITY: 1200
+ }
+
+ PlayState.loadLevel = function (data) {
+     // ...
+     this.game.physics.arcade.gravity.y = this.GRAVITY;
+ };
+</code></pre>
+</li>
+</ol>
+<p><small>Faire ceci dans le chargement du niveau permettrait d&#39;avoir de modifier la gravité en fonction de l&#39;univers en cours. Pourquoi ne pas avoir un niveau se déroulant sur la Lune?</small></p>
+<ol>
+<li><p>Vérifiez dans le navigateur. Le héros est sensé tomber et les autres éléments ne bougent pas, car il ne possède pas encore de corps physique.</p>
+<p> <img src="/assets/platformer/hero_fall_bottom.png" alt="Main character falling down"/></p>
+</li>
+</ol>
+<h2 id="permettre-au-h-ros-d-entrer-en-collision-avec-les-plateformes">Permettre au héros d&#39;entrer en collision avec les plateformes</h2>
+<ol>
+<li><p>Notre héros de devrait pas, tel un fantôme, passer à travers les murs. Pour nous simplifier la tâche, nous allons placer les plateformes dans un groupe.</p>
+<pre><code class="lang-javascript"> PlayState.loadLevel = function (data) {
+     this.platforms = this.game.add.group();
+
+     // ...
+ };
+</code></pre>
+</li>
+<li><p>À présent, la création d&#39;une plateform, d&#39;un <code>Phaser.Sprite</code>, va se faire au travers du groupe. Et comme pour le héros, il est indispensable d&#39;activer la physique.</p>
+<pre><code class="lang-javascript"> PlayState.spawnPlatform = function (platform) {
+     let sprite = this.platforms.create(
+         platform.x, platform.y, platform.image);
+
+     this.game.physics.enable(sprite);
+ };
+</code></pre>
+</li>
+<li><p>Le héros et les plateformes n&#39;entrent pas en collision encore. Il faut explicitement générer la collision à chaque mise à jour <code>update</code> de l&#39;état du jeu.</p>
+<pre><code class="lang-js"> PlayState.update = function () {
+     this.handleCollisions();
+     this.handleInput();
+ };
+
+ PlayState.handleCollisions = function () {
+     this.game.physics.arcade.collide(this.hero, this.platforms);
+ };
+</code></pre>
+</li>
+<li><p>Si on essaie, les plateformes tombent et une persiste en restant sur la tête du héros. Le héros reste car nous l&#39;avons empêcher de sortir de l&#39;écran.</p>
+<p> <img src="/assets/platformer/platforms_falling.gif" alt="Platforms falling"/></p>
+</li>
+</ol>
+<h2 id="corriger-la-gravitation-des-l-ments-fixes">Corriger la gravitation des éléments fixes</h2>
+<ol>
+<li><p>Si les collisions sont importantes pour les plateformes, la gravitation ne l&#39;est pas. Désactivons-la.</p>
+<pre><code class="lang-js"> PlayState.spawnPlatform = function (platform) {
+     // ...
+     sprite.body.allowGravity = false;
+ };
+</code></pre>
+</li>
+<li><p>On rafraichit le jeu et les plateformes restent en place... sauf le sol. Ceci se produit car le poids du héros va être appliqué sur le sol et le faire tomber.</p>
+</li>
+<li><p>Pour corriger ce dernier point, nous devons rendre notre plateformes immuables en cas de collision.</p>
+<pre><code class="lang-js"> PlayState._spawnPlatform = function (platform) {
+     // ...
+     sprite.body.immovable = true;
+ };
+</code></pre>
+</li>
+</ol>
+<p>Tout devrait fonctionner à merveilles à présent. En bonus, le héros n&#39;est plus capable de traverser les murs et va rester bloqué au milieu par le petit bloc.</p>
+<p><img src="/assets/platformer/step06_check.png" alt="Character vs Wall"/></p>
+<h1 id="v-rifications">Vérifications</h1>
+<ul>
+<li>Les plateformes restent en place</li>
+<li>Le héros ne tombent pas à travers du sol</li>
+<li>Le héros ne peut pas traverser le petit mur posé sur le sol</li>
+</ul>
+<p>À présent, il est temps de sauter!</p>
+
+        <h2>Téléchargement</h2>
+        <p>Êtes-vous bloqué? Jetez un œil <a href="../../../../assets/platformer/steps/step07.js" télécharger="">au code source</a> de cette étape.
+        </p>
+        <nav class="paginated-nav">
+          <ul>
+            <li class="previous">« Prédédent:&nbsp;<a href="../utilisation-de-la-physique">Utilisation de la physique</a></li>
+            <li class="next">Suivant:&nbsp;<a href="../sauts">Sauts</a>&nbsp;»</li>
+          </ul>
+        </nav>
+      </article>
+    </main>
+    <footer class="main-footer">
+      <p>Propulsé avec amour,<br/>par les fées de chez <a href="https://mozilla.org">Mozilla</a>.</p>
+    </footer>
+  </body>
+</html>

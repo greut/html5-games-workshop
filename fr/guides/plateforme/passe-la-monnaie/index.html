@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Atelier jeux HTML5 - Passe la monnaie</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../../../css/styles.css"/>
+    <link rel="stylesheet" href="../../../../vendor/prism/prism.css"/>
+    <script src="../../../../vendor/prism/prism.js"></script>
+  </head>
+  <body>
+    <header class="main-header">
+      <h1><a href="../../..">Atelier jeux HTML5</a></h1>
+    </header>
+    <main>
+      <article>
+        <p>Également disponible en <a href="../../../../en/guides/platformer/pickable-coins">en</a>.
+        </p>
+        <h1>Passe la monnaie</h1><p>La mécanique de jeu principale est en place avec le saut. Il est venu temps de rendre le tout plus attrayant et ludique. Nous allons ajouter des pièces d&#39;or pouvant être collectée par le héros. Ces pièces vont être animées et nous allons découvrir comment réaliser ces animations.</p>
+<p>Dans Phaser, les animations sont basés sur les images clés. Ainsi un sprite va changer d&#39;image tout les tant de temps et un animation naitra.</p>
+<p><img src="/assets/platformer/coin_spritesheet.png" alt="Coin spritesheet"/></p>
+<p>Voici la feuille de sprites de la pièce et Phaser va grandement nous simplifier la vie quand il s&#39;agira d&#39;en faire usage.</p>
+<p>Pour collectionner les pièces d&#39;or, il nous faudra détecter les collisions avec le héros.</p>
+<h1 id="t-ches">Tâches</h1>
+<h2 id="chargement-de-la-feuille-de-sprite">Chargement de la feuille de sprite</h2>
+<ol>
+<li><p>Une feuille de sprites est un type d&#39;asset particulier à charger à l&#39;aide de <code>game.load.spritesheet</code> and non comme une simple image. Il est important de renseigner la taille de chaque sprite individuel, ici <code>22×22</code>.</p>
+<pre><code class="lang-js"> PlayState.preload = function () {
+     // ...
+     this.game.load.spritesheet(&#39;coin&#39;, &#39;images/coin_animated.png&#39;, 22, 22);
+ };
+</code></pre>
+</li>
+</ol>
+<h2 id="afficher-les-pi-ces">Afficher les pièces</h2>
+<ol>
+<li><p>Commes les plateformes, le niveau au format JSON contient l&#39;emplacement de chaque pièce. Une fois chargée, il est important de créer un groupe, puis de générer chaque pièce.</p>
+<pre><code class="lang-js"> PlayState._loadLevel = function (data) {
+     this.platforms = this.game.add.group();
+     this.coins = this.game.add.group();
+
+     // ...
+
+     data.coins.forEach(this.spawnCoin, this);
+
+     // ...
+ };
+</code></pre>
+</li>
+<li><p>La méthode de création de pièce <code>spawnCoin</code> créer une pièce dans le groupe de pièces. Étant donné, qu&#39;il n&#39;y a pas de comportement particulier, une classe spécialisant <code>Phaser.Sprite</code> n&#39;est pas nécessaire.</p>
+<pre><code class="lang-js"> PlayState.spawnCoin = function (coin) {
+     let sprite = this.coins.create(coin.x, coin.y, &#39;coin&#39;);
+     sprite.anchor.set(0.5, 0.5);
+ };
+</code></pre>
+</li>
+<li><p>Il est venu le temps de tester tout ceci. Des pièces, sans animations sont présentes.</p>
+<p> <img src="/assets/platformer/static_coins.png" alt="Static coins"/></p>
+</li>
+</ol>
+<h2 id="animer-les-pi-ces">Animer les pièces</h2>
+<ol>
+<li><p>Afin d&#39;ajouter une animation, il nous faut spécifier les images désirées. De manière optionelle, on peut renseigner la vitesse d&#39;une animation (en images par seconde) et si l&#39;animation tourne en boucle ou pas. Un sprite peut posséder plusieurs animations qu&#39;il convient de nommer correctement afin de les jouer à notre guise avec <code>play</code>.</p>
+<pre><code class="lang-js"> PlayState._spawnCoin = function (coin) {
+     // ...
+     sprite.animations.add(&#39;rotate&#39;, [0, 1, 2, 1], 6, true); // 6fps, looped
+     sprite.animations.play(&#39;rotate&#39;);
+ };
+</code></pre>
+</li>
+<li><p>Les pièces devraient être animées dans la scène à présent.</p>
+<p> <img src="/assets/platformer/animated_coin.gif" alt="Animated coin"/></p>
+</li>
+</ol>
+<h2 id="collectionner-les-pi-ces">Collectionner les pièces</h2>
+<ol>
+<li><p>Le moteur physique et les collisions vont nous permettre de savoir quand une pièce est touchée. Il faut donc donner un corps physique aux pièces et désactiver la gravité pour qu&#39;elles ne tombent pas comme des mouches.</p>
+<pre><code class="lang-js"> PlayState.spawnCoin = function (coin) {
+     // ...
+     this.game.physics.enable(sprite);
+     sprite.body.allowGravity = false;
+ };
+</code></pre>
+</li>
+<li><p>Ensuite, la détection des collisions. Il est important d&#39;utiliser un test de superposition <code>overlap</code> plutôt que de collision <code>collide</code> afin que les pièces ne bloquent pas les déplacements du héros.</p>
+<pre><code class="lang-js"> PlayState.handleCollisions = function () {
+     //...
+     this.game.physics.arcade.overlap(this.hero, this.coins, this.onHeroVsCoin,
+         null, this);
+ };
+</code></pre>
+</li>
+</ol>
+<p><small>Le <code>null</code> permettrait de fournir une fonction pour filter les sprites à exclure.</small></p>
+<ol>
+<li><p>Et finalement, ce qu&#39;il se passe quand un pièce est touchée, elle disparait <code>kill</code>.</p>
+<pre><code class="lang-js"> PlayState.onHeroVsCoin = function (hero, coin) {
+     coin.kill();
+ };
+</code></pre>
+</li>
+</ol>
+<p>À ce stade, vous devriez être capable de collecter toutes les pièces du jeu.</p>
+<h1 id="v-rifications">Vérifications</h1>
+<ul>
+<li>Les pièces sont affichées avec une animation.</li>
+<li>Le héros peut ramasser les pièces qui disparaissent.</li>
+<li>Un effet sonore est joué lorsqu&#39;une pièce disparait.</li>
+</ul>
+
+        <h2>Téléchargement</h2>
+        <p>Êtes-vous bloqué? Jetez un œil <a href="../../../../assets/platformer/steps/step09.js" télécharger="">au code source</a> de cette étape.
+        </p>
+        <nav class="paginated-nav">
+          <ul>
+            <li class="previous">« Prédédent:&nbsp;<a href="../sauts">Sauts</a></li>
+            <li class="next">Suivant:&nbsp;<a href="../../../../en/guides/platformer/walking-enemies">Walking enemies</a>&nbsp;»</li>
+          </ul>
+        </nav>
+      </article>
+    </main>
+    <footer class="main-footer">
+      <p>Propulsé avec amour,<br/>par les fées de chez <a href="https://mozilla.org">Mozilla</a>.</p>
+    </footer>
+  </body>
+</html>

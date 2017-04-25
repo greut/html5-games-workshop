@@ -13,6 +13,8 @@
   </header>
   <main>
     <article>
+      <p>Also available in <a href="../../../../fr/guides/plateforme/gravitation">fr</a>.
+      </p>
       <h1>Gravity</h1><p>Using a physics engine makes jumping and handling gravity easy. Now we will handle gravity in the world, making the character step <em>on</em> platforms. And as a side effect, we will make the character not to go trough walls too!</p>
 <p>We can set a global gravity that affects all the entities in the world. In a platformer game, We want the <em>characters</em> (like the hero and some enemies) to be affected by it. Other sprites (like pickable coins, or <em>platforms</em> themselves) should be immobile and not be affected by gravity).</p>
 <p>One thing that we will start doing from now on is to group multiple sprites of the same kind into a <strong>sprite list</strong>: in Phaser they are instances of <code>Phaser.Group</code>. Once there, we can –among other things– perform collision tests between groups or between a single sprite and a whole group.</p>
@@ -31,7 +33,7 @@
 <p> <small>We are doing this here and not in <code>PlayState.init</code> to have more flexibility… in this way, in the future we could set the gravity value in the JSON file and allow each level to have their own gravity… Some platformers have levels in the Moon!</small></p>
 </li>
 <li><p>Check the result in the browser… you will see that the main character falls down. The other sprites (the platforms) aren&#39;t affected because they don&#39;t have a physic body –yet.</p>
-<p> <img src="/html5-games-workshop/assets/platformer/hero_fall_bottom.png" alt="Main character falling down"/></p>
+<p> <img src="/assets/platformer/hero_fall_bottom.png" alt="Main character falling down"/></p>
 </li>
 </ol>
 <h3 id="make-the-character-collide-against-the-platforms">Make the character collide against the platforms</h3>
@@ -67,7 +69,7 @@
 </code></pre>
 </li>
 <li><p>If you try it out, you will see how the platforms fall! And there is one remaining platform that stays on the top of the character –because we prevented the character to move outside of the screen, remember?</p>
-<p> <img src="/html5-games-workshop/assets/platformer/platforms_falling.gif" alt="Platforms falling"/></p>
+<p> <img src="/assets/platformer/platforms_falling.gif" alt="Platforms falling"/></p>
 </li>
 </ol>
 <h3 id="fix-collisions">Fix collisions</h3>
@@ -80,7 +82,7 @@
 </code></pre>
 </li>
 <li><p>Refresh the game in the browser and you will be able to see how the platforms stay in their place… except the ground. This is happening because the main character is falling and <em>pushing</em> against the ground –like a pool ball against other balls.</p>
-<p> <img src="/html5-games-workshop/assets/platformer/ground_falling.gif" alt="Ground falling"/></p>
+<p> <img src="/assets/platformer/ground_falling.gif" alt="Ground falling"/></p>
 </li>
 <li><p>In order to fix this, we need to tell the physics engine that the platforms <em>can&#39;t be moved</em> when colliding. We do this by setting another flag:</p>
 <pre><code class="lang-js"> PlayState._spawnPlatform = function (platform) {
@@ -91,7 +93,7 @@
 </li>
 </ol>
 <p>Everything should be working as expected now! As a bonus, see how the character can&#39;t go through the small wall/platform on the ground:</p>
-<p><img src="/html5-games-workshop/assets/platformer/step06_check.png" alt="Character vs Wall"/></p>
+<p><img src="/assets/platformer/step06_check.png" alt="Character vs Wall"/></p>
 <h2 id="checklist">Checklist</h2>
 <ul>
 <li>Platforms stay at their place.</li>
