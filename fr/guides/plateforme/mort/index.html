@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Atelier jeux HTML5 - Mort</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../../../css/styles.css"/>
+    <link rel="stylesheet" href="../../../../vendor/prism/prism.css"/>
+    <script src="../../../../vendor/prism/prism.js"></script>
+  </head>
+  <body>
+    <header class="main-header">
+      <h1><a href="../../..">Atelier jeux HTML5</a></h1>
+    </header>
+    <main>
+      <article>
+        <p>Également disponible en <a href="../../../../en/guides/platformer/death">en</a>.
+        </p>
+        <h1>Mort</h1><p>Si nous avons des ennemis, il n&#39;y a aucune intéraction entre eux et le héros. Il est temps de leur permettre de s&#39;entretuer.</p>
+<ul>
+<li>Les araignées vont tuer le héros en le touchant simplement.
+_ Le héros ne pourra tuer les araignées que s&#39;il leur saute ou tombe sur la tête.</li>
+</ul>
+<p>Comme pour les piècettes d&#39;or, un simple test de chevauchement <code>overlap</code> suffira sans devoir gérer une collision complexe.</p>
+<h1 id="t-ches">Tâches</h1>
+<h2 id="faire-que-les-araign-es-tues-le-h-ros">Faire que les araignées tues le héros</h2>
+<ol>
+<li><p>Tuer ou être tuer est un évènement très importan et il est nécessaire de fournir le plus de feedback possible.</p>
+<pre><code class="lang-js"> PlayState.create = function () {
+     this.sfx = {
+         // ...
+         stomp: this.game.add.audio(&#39;sfx:stomp&#39;)
+     };
+     // ...
+ };
+</code></pre>
+<pre><code class="lang-js"> PlayState.preload = function () {
+     // ...
+     this.game.load.audio(&#39;sfx:stomp&#39;, &#39;audio/stomp.wav&#39;);
+ };
+</code></pre>
+</li>
+<li><p>Pour gérer le massacre, il nous faut détecter quand une araignée touche le héros. Comme pour les pièces, le mieux est de le faire par chevauchement.</p>
+<pre><code class="lang-js"> PlayState._handleCollisions = function () {
+     // ...
+     this.game.physics.arcade.overlap(this.hero, this.spiders,
+         this.onHeroVsEnemy, null, this);
+ };
+</code></pre>
+</li>
+<li><p>Il reste à ajouter le <em>callback</em> traitant le chevauchement d&#39;une araignée et du héros. Pour le moment, nous pouvons tuer le héros et redémarrer le niveau.</p>
+<pre><code class="lang-js"> PlayState._onHeroVsEnemy = function (hero, enemy) {
+     this.sfx.stomp.play();
+     this.game.state.restart();
+ };
+</code></pre>
+</li>
+<li><p>Essayez dans le navigateur et assurez-vous que le débute à nouveau.</p>
+</li>
+</ol>
+<h2 id="tuer-les-araign-es">Tuer les araignées</h2>
+<ol>
+<li><p>Le caractère va tuer les araignées en leur tombant dessus. Du coup, un test possible est de consulter la vitesse verticale du héros à la collision. Si elle est positive, alors il tombe, sinon, c&#39;est qu&#39;il a percuté l&#39;araignée.</p>
+<pre><code class="lang-js"> PlayState.onHeroVsEnemy = function (hero, enemy) {
+     if (hero.body.velocity.y &gt; 0) {
+         enemy.kill();
+         this.sfx.stomp.play();
+     }
+     else {
+         this.sfx.stomp.play();
+         this.game.state.restart();
+     }
+ };
+</code></pre>
+</li>
+<li><p>Essayez-le! Mais l&#39;impression est étrange car le héros passe à travers des araignées. Lui donner un petit rebond aidera à améliorer les sensations offertes par le jeu.</p>
+<pre><code class="lang-js"> Hero.prototype.bounce = function () {
+     const BOUNCE_SPEED = 200;
+     this.body.velocity.y = -BOUNCE_SPEED;
+ };
+</code></pre>
+<pre><code class="lang-js"> PlayState.onHeroVsEnemy = function (hero, enemy) {
+     if (hero.body.velocity.y &gt; 0) {
+         hero.bounce();
+         // ...
+     }
+     // ...
+ };
+</code></pre>
+</li>
+<li><p>Essayez à nouveau. C&#39;est mieux! Non?</p>
+<p> <img src="/html5-games-workshop/assets/platformer/enemy_bounce.gif" alt="Bouncing on enemies"/></p>
+</li>
+</ol>
+<h2 id="animations">Animations</h2>
+<ol>
+<li><p>Tuer des ennemis sera encore plus satisfaisant en ajoutant une animation d&#39;agonie. Nous utilisons les deux dernières <em>frames</em> de la feuille de sprites pour celà.</p>
+<pre><code class="lang-js"> function Spider(game, x, y) {
+     // ...
+     this.animations.add(&#39;die&#39;, [0, 4, 0, 4, 0, 4, 3, 3, 3, 3, 3, 3], 12);
+     // ...
+ }
+</code></pre>
+</li>
+<li><p>Lorsqu&#39;on appelle <code>kill</code> sur un sprite, il disparait immédiatement. En ajoutant une nouvelle méthode de mort <code>die</code>, nous pouvons désactiver le corps physique de l&#39;ennemi (plus de collision), jouer l&#39;animation puis effectivement supprimer le sprite avec <code>kill</code></p>
+<pre><code class="lang-js"> Spider.prototype.die = function () {
+     this.body.enable = false;
+
+     this.animations.play(&#39;die&#39;).onComplete.addOnce(function () {
+         this.kill();
+     }, this);
+ };
+</code></pre>
+</li>
+<li><p>Il nous reste à remplacer l&#39;appel à <code>kill</code> par un appel à <code>die</code>.</p>
+<pre><code class="lang-js"> PlayState.onHeroVsEnemy = function (hero, enemy) {
+     // ...
+     if (hero.body.velocity.y &gt; 0) {
+         enemy.die();
+     }
+     // ...
+ };
+</code></pre>
+</li>
+<li><p>L&#39;animation devrait se jouer.</p>
+<p> <img src="/html5-games-workshop/assets/platformer/enemy_dying.gif" alt="Spider dying animation"/></p>
+</li>
+</ol>
+<h1 id="v-rifications">Vérifications</h1>
+<ul>
+<li>Le héros tue les araignées en leur sautant sur la tête</li>
+<li>Les araignées disparaissent après une petite animation</li>
+<li>Le héro meurt si une araignée lui fonce contre</li>
+<li>Le niveau recommence lors que le héros décède.</li>
+</ul>
+
+        <h2>Téléchargement</h2>
+        <p>Êtes-vous bloqué? Jetez un œil <a href="../../../../assets/platformer/steps/step11.js" télécharger="">au code source</a> de cette étape.
+        </p>
+        <nav class="paginated-nav">
+          <ul>
+            <li class="previous">« Prédédent:&nbsp;<a href="../ennemis">Ennemis</a></li>
+            <li class="next">Suivant:&nbsp;<a href="../tableau-des-scores">Tableau des scores</a>&nbsp;»</li>
+          </ul>
+        </nav>
+      </article>
+    </main>
+    <footer class="main-footer">
+      <p>Propulsé avec amour,<br/>par les fées de chez <a href="https://mozilla.org">Mozilla</a>.</p>
+    </footer>
+  </body>
+</html>

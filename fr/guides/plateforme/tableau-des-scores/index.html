@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Atelier jeux HTML5 - Tableau des scores</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../../../css/styles.css"/>
+    <link rel="stylesheet" href="../../../../vendor/prism/prism.css"/>
+    <script src="../../../../vendor/prism/prism.js"></script>
+  </head>
+  <body>
+    <header class="main-header">
+      <h1><a href="../../..">Atelier jeux HTML5</a></h1>
+    </header>
+    <main>
+      <article>
+        <p>Également disponible en <a href="../../../../en/guides/platformer/scoreboard">en</a>.
+        </p>
+        <h1>Tableau des scores</h1><p>Dans cette étape, nous allons afficher un tableau des score, nommé <em>Head-up display</em> (HUD) en anglais, affichant la quantité de pièces collectées.</p>
+<p><img src="/html5-games-workshop/assets/platformer/coin_scoreboard.png" alt="Coin scoreboard"/></p>
+<p>Nous devons être capable d&#39;écrire du texte à l&#39;écran. Dans un jeu, différentes techniques sont enviseagables.</p>
+<ul>
+<li>Utiliser une police de caractères de type TTF comme Times New Roman.</li>
+<li>Utiliser une police de caractères bitmap, qui est en fait une feuille de sprites.</li>
+</ul>
+<p>Nous allons utiliser une police bitmap que Phaser nomme <strong>retro fonts</strong>. La police de caractères consiste des chiffres, d&#39;un espace et d&#39;un ×. La voici.</p>
+<p><img src="/html5-games-workshop/assets/platformer/bitmap_font_sheet.png" alt="Bitmap font spritesheet"/></p>
+<p>Il est important de savoir que pour écrire avec une police bitmap, il faut deux instances: <code>Phaser.RetroFont</code> ainsi que <code>Phaser.Image</code>. La raison est que la police stocke les pixels de données de la fonte alors que l&#39;image est  utilisée pour l&#39;affichage.</p>
+<h1 id="t-ches">Tâches</h1>
+<h2 id="m-moriser-les-pi-ces-collect-es">Mémoriser les pièces collectées</h2>
+<ol>
+<li><p>Il est simplement nécessaire d&#39;ajouter une propriété à l&#39;état du jeu. On l&#39;initialise à zéro et augmentant à la collision entre le héros et une pièce.</p>
+<pre><code class="lang-js"> PlayState.init = function () {
+     // ...
+     this.coinPickupCount = 0;
+ };
+</code></pre>
+<pre><code class="lang-js"> PlayState.onHeroVsCoin = function (hero, coin) {
+     // ...
+     this.coinPickupCount++;
+ };
+</code></pre>
+</li>
+</ol>
+<h2 id="afficher-l-ic-ne-des-pi-ces">Afficher l&#39;icône des pièces</h2>
+<ol>
+<li><p>Une nouvelle image est à charger représentant une image plus grande.</p>
+<pre><code class="lang-js"> PlayState.preload = function () {
+     // ...
+     this.game.load.image(&#39;icon:coin&#39;, &#39;images/coin_icon.png&#39;);
+     // ...
+ };
+</code></pre>
+</li>
+<li><p>Nous allons séparer la création des éléments de l&#39;interface du reste. Et également créer un nouveau groupe pour stocker tout ça.</p>
+<pre><code class="lang-js"> PlayState.createHud = function () {
+     var coinIcon = this.game.make.image(0, 0, &#39;icon:coin&#39;);
+
+     this.hud = this.game.add.group();
+     this.hud.add(coinIcon);
+     this.hud.position.set(10, 10);
+ };
+</code></pre>
+<p> Notons que toutes les éléments à l&#39;intérieur du groupe sont affichés relativement à la position de celui-ci <code>10, 10</code>.</p>
+</li>
+<li><p>Comme il doit être affiché par dessus tous les autres, il faut le créer en dernier.</p>
+<pre><code class="lang-js"> PlayState.create = function () {
+     // ...
+     this.createHud();
+ }
+</code></pre>
+</li>
+<li><p>Vérifions que l&#39;icône s&#39;affiche correctement.</p>
+<p> <img src="/html5-games-workshop/assets/platformer/hud_icon_only.png" alt="HUD with coin icon"/></p>
+</li>
+</ol>
+<h2 id="-crire-le-score">Écrire le score</h2>
+<ol>
+<li><p>Finalement, la partie intéressante. Il est temps de charger l&#39;image de la police de caractères. Même si c&#39;est une feuille de sprite, Phaser demande à ce qu&#39;on charge en tant qu&#39;image.</p>
+<pre><code class="lang-js"> PlayState.preload = function () {
+     // ...
+     this.game.load.image(&#39;font:numbers&#39;, &#39;images/numbers.png&#39;);
+     // ...
+ };
+</code></pre>
+</li>
+<li><p>Avoir une image permet de créer correctement un <code>Phaser.RetroFont</code>.</p>
+<pre><code class="lang-js"> PlayState.createHud = function () {
+     this.coinFont = this.game.add.retroFont(&#39;font:numbers&#39;, 20, 26,
+         &#39;0123456789X &#39;, 6);
+     // ...
+ };
+</code></pre>
+<p> Il est important de renseigner Phaser sur la taille de chaque caractères, quels caractères sont présents et le nombre par ligne qui est de 6 dans le cas qui nous intéresse.</p>
+</li>
+<li><p>Une fois la police créée, il nous faut créer une entité pouvant être affichée dans le jeu. Une <code>Phaser.Image</code> fera l&#39;affaire.</p>
+<pre><code class="lang-js"> PlayState.createHud = function () {
+     // var coinIcon = ...
+     var coinScoreImg = this.game.make.image(
+         coinIcon.x + coinIcon.width,
+         coinIcon.height / 2,
+         this.coinFont
+     );
+     coinScoreImg.anchor.set(0, 0.5);
+
+     // ...
+     this.hud.add(coinScoreImg);
+ };
+</code></pre>
+<p> on calcule les positions à partir de l&#39;icône existante pour les avoir côte à côte.</p>
+</li>
+<li><p>Et finalement, l&#39;attribut <code>text</code> de la fonte va dessiner le texte tel que voulu.</p>
+<pre><code class="lang-js"> PlayState.update = function () {
+     // ...
+     this.coinFont.text = `x${this.coinPickupCount}`;
+ };
+</code></pre>
+</li>
+</ol>
+<p>Le score devrait à présent s&#39;afficher et être mis à jour.</p>
+<p><img src="/html5-games-workshop/assets/platformer/level_coin_scoreboard.png" alt="Level with coin score board"/></p>
+
+        <h2>Téléchargement</h2>
+        <p>Êtes-vous bloqué? Jetez un œil <a href="../../../../assets/platformer/steps/step12.js" télécharger="">au code source</a> de cette étape.
+        </p>
+        <nav class="paginated-nav">
+          <ul>
+            <li class="previous">« Prédédent:&nbsp;<a href="../mort">Mort</a></li>
+            <li class="next">Suivant:&nbsp;<a href="../../../../en/guides/platformer/animations-for-the-main-character">Animations for the main character</a>&nbsp;»</li>
+          </ul>
+        </nav>
+      </article>
+    </main>
+    <footer class="main-footer">
+      <p>Propulsé avec amour,<br/>par les fées de chez <a href="https://mozilla.org">Mozilla</a>.</p>
+    </footer>
+  </body>
+</html>

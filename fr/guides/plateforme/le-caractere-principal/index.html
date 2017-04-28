@@ -42,7 +42,7 @@ Car.prototype.constructor = Car;
 <h3 id="sp-cialiser-phaser-sprite-">Spécialiser <code>Phaser.Sprite</code></h3>
 </li>
 <li><p>Ajoutez la définition du héro dans <code>main.js</code>. On suit le patron d&#39;héritage utilisé en JavaScript.</p>
-<pre><code class="lang-javascript">function Hero(game, x, y, image) {
+<pre><code class="lang-javascript">function Hero(game, x, y) {
    // Appel le constructeur de Phaser.Sprite
    Phaser.Sprite.call(this, game, x, y, &#39;hero&#39;);
 }
@@ -62,12 +62,12 @@ Hero.prototype.constructor = Hero;
 };
 </code></pre>
 <pre><code class="lang-javascript">PlayState.spawnCharacters = function (data) {
-  this.hero = new Hero(this.game, data.hero.x, data.hero.y, &#39;hero&#39;);
+  this.hero = new Hero(this.game, data.hero.x, data.hero.y);
   this.game.add.existing(this.hero);
 };
 </code></pre>
 </li>
-<li><p>Après rafraichissement de la page, le personnage apparait... cependant il semble mal positionné.</p>
+<li><p>Après rafraichissement de la page, le personnage apparaît... cependant il semble mal positionné.</p>
 <p><img src="/html5-games-workshop/assets/platformer/hero_bad_position.png" alt="Un héro mal positionné"/></p>
 </li>
 <li><p>Phaser gère le positionnement d&#39;un <em>sprite</em> à l&#39;aide d&#39;un ancre (<code>anchor</code>). C&#39;est un vecteur x, y allant de 0 à 1 (gauche - droite, haut - bas). Afin de center le héro, il faut le placer à la position <code>(0.5, 0.5)c)</code>. Modifier le constructeur du héro de la manière suivante.</p>
