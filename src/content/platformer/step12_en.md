@@ -102,7 +102,7 @@ It's important to know that in order to render a text with a bitmap font, we nee
     };
     ```
 
-    Since Phaser has no idea of the contents of the spritesheet, we need to tell it when creating the retro font: the width and height of each character and which characters are being included (the orden is important!)
+    Since Phaser has no idea of the contents of the spritesheet, we need to tell it when creating the retro font: the width and height of each character and which characters are being included (the order is important!)
 
 1. With the retro font created, we need to make use of it from a game entity. We will use a `Phaser.Image` for this:
 
@@ -123,7 +123,7 @@ It's important to know that in order to render a text with a bitmap font, we nee
     ```js
     PlayState.update = function () {
         // ...
-        this.coinFont.text = `x${this.coinPickupCount}`;
+        this.coinFont.text = "x" + this.coinPickupCount;
     };
     ```
 
