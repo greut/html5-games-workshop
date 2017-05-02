@@ -43,7 +43,7 @@ Here's how the whole thing will look like:
     ```js
     PlayState._spawnDoor = function (x, y) {
         this.door = this.bgDecoration.create(x, y, 'door');
-        this.door.anchor.setTo(0.5, 1);
+        this.door.anchor.set(0.5, 1);
         this.game.physics.enable(this.door);
         this.door.body.allowGravity = false;
     };
