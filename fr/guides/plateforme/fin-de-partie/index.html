@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Atelier jeux HTML5 - Fin de partie</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../../../css/styles.css"/>
+    <link rel="stylesheet" href="../../../../vendor/prism/prism.css"/>
+    <script src="../../../../vendor/prism/prism.js"></script>
+  </head>
+  <body>
+    <header class="main-header">
+      <h1><a href="../../..">Atelier jeux HTML5</a></h1>
+    </header>
+    <main>
+      <article>
+        <p>Également disponible en <a href="../../../../en/guides/platformer/win-condition">en</a>.
+        </p>
+        <h1>Fin de partie</h1><p>Actuellement, le joueur peut <em>perdre</em> une partie mais pas en gagner une.</p>
+<p>Pour corriger ceci nous allons ajouter une porte fermée et une clé. Le but du jeu va être de récupérer la clé afin d&#39;ouvrir la porte vers le niveau suivant. Il faudra également ajouter un icône permettant d&#39;indiquer au joueur si la clé a été ramassée ou non.</p>
+<p>Dans le fichier JSON du niveau, les positions de la porte et de la clé sont données.</p>
+<p>Voici à quoi ressemblera le niveau.</p>
+<p><img src="/html5-games-workshop/assets/platformer/win_condition.png" alt="Level with the win condition elements"/></p>
+<h1 id="t-ches">Tâches</h1>
+<h2 id="cr-er-la-porte">Créer la porte</h2>
+<ol>
+<li><p>La porte est une feuille de sprites ouverte ou fermée.</p>
+<pre><code class="lang-js"> PlayState.preload = function () {
+     // ...
+     this.game.load.spritesheet(&#39;door&#39;, &#39;images/door.png&#39;, 42, 66);
+ };
+</code></pre>
+</li>
+<li><p>La porte va apparaître sous le héros, ou les ennemis. Il faut donc créer un groupe pour elle avant les autres qui contiendra également les clés et les autres décorations.</p>
+<pre><code class="lang-js"> PlayState.loadLevel = function (data) {
+     this.bgDecoration = this.game.add.group();
+     // ...
+ };
+</code></pre>
+<p> L&#39;ordre des créations des groupes défini l&#39;ordre de dessin. Les derniers étant dessinés en dernier, donc par dessus les autres.</p>
+</li>
+<li><p>Les créations de la porte et de la clé sont séparées.</p>
+<pre><code class="lang-js"> PlayState.spawnDoor = function (x, y) {
+     this.door = this.bgDecoration.create(x, y, &#39;door&#39;);
+     this.door.anchor.set(0.5, 1);
+     this.game.physics.enable(this.door);
+     this.door.body.allowGravity = false;
+ };
+</code></pre>
+<p> Le corps physique est créé afin de pouvoir détecter les collisions par la suite.</p>
+</li>
+<li><p>Cette méthode est appelée au chargement du niveau.</p>
+<pre><code class="lang-js"> PlayState.loadLevel = function (data) {
+     // ...
+     this.spawnDoor(data.door.x, data.door.y);
+     // ...
+ };
+</code></pre>
+</li>
+<li><p>En rechargant le jeu, la porte apparait.</p>
+<p> <img src="/html5-games-workshop/assets/platformer/door_spawned.png" alt="Door"/></p>
+</li>
+</ol>
+<h2 id="cr-er-la-cl-">Créer la clé</h2>
+<ol>
+<li><p>Idem pour la clé qui est une simple image.</p>
+<pre><code class="lang-js"> LoadingState.preload = function () {
+     // ...
+     this.game.load.image(&#39;key&#39;, &#39;images/key.png&#39;);
+ };
+</code></pre>
+</li>
+<li><p>Et avec une méthode spécifique pour créer la clé.</p>
+<pre><code class="lang-js"> PlayState.spawnKey = function (x, y) {
+     this.key = this.bgDecoration.create(x, y, &#39;key&#39;);
+     this.key.anchor.set(0.5, 0.5);
+     this.game.physics.enable(this.key);
+     this.key.body.allowGravity = false;
+ };
+</code></pre>
+<p> En plaçant la clé dans le même groupe que la porte, elle sera derrière tout le reste.</p>
+</li>
+<li><p>Il nous reste à appeler cette méthode au chargement du niveau.</p>
+<pre><code class="lang-js"> PlayState._loadLevel = function (data) {
+     // ...
+     this.spawnKey(data.key.x, data.key.y);
+     // ...
+ };
+</code></pre>
+</li>
+<li><p>Et voilà, la clé s&#39;affiche en haut à droite.</p>
+<p> <img src="/html5-games-workshop/assets/platformer/key_spawned.png" alt="Static key"/></p>
+</li>
+</ol>
+<h2 id="conditions-de-victoire">Conditions de victoire</h2>
+<ol>
+<li><p>La condition de la victoire d&#39;atteindre la clé puis la porte. Stockons l&#39;information indiquant si la clé a été récupérée dans l&#39;état du jeu.</p>
+<pre><code class="lang-js"> PlayState.init = function () {
+     // ...
+     this.hasKey = false;
+ };
+</code></pre>
+<p> Ce drapeau va être placé à vrai <code>true</code> par la suite.</p>
+</li>
+<li><p>Pour permettre au joueur d&#39;avoir un retour intéressant, avoir des sons est primordial. Chargons les sons de la porte et de la clé.</p>
+<pre><code class="lang-js"> PlayState.preload = function () {
+     // ...
+     this.game.load.audio(&#39;sfx:key&#39;, &#39;audio/key.wav&#39;);
+     this.game.load.audio(&#39;sfx:door&#39;, &#39;audio/door.wav&#39;);
+ };
+</code></pre>
+<pre><code class="lang-js"> PlayState.create = function () {
+     this.sfx = {
+         key: this.game.add.audio(&#39;sfx:key&#39;),
+         door: this.game.add.audio(&#39;sfx:door&#39;),
+         // ...
+     };
+     // ...
+ };
+</code></pre>
+</li>
+<li><p>L&#39;intéraction entre le héros et la clé se fait au chevauchement des deux. Le son est joué et le sprite de la clé ôté. Il est important de changer l&#39;état permettant de mémoriser que la clé a été collectée.</p>
+<pre><code class="lang-js"> PlayState.handleCollisions = function () {
+     // ...
+     this.game.physics.arcade.overlap(this.hero, this.key, this.onHeroVsKey,
+         null, this)
+ };
+</code></pre>
+<pre><code class="lang-js"> PlayState.onHeroVsKey = function (hero, key) {
+     this.sfx.key.play();
+     key.kill();
+     this.hasKey = true;
+ };
+</code></pre>
+</li>
+<li><p>Testons le jeu. Le clé doit disparaître et le son se jouer.</p>
+</li>
+<li><p>Plus compliqué, la collision entre le héros et la porte qui implique de gérer une condition.</p>
+<pre><code class="lang-js"> PlayState.handleCollisions = function () {
+     // ...
+     this.game.physics.arcade.overlap(this.hero, this.door, this.onHeroVsDoor,
+         this.canHeroVsDoor, this);
+ };
+</code></pre>
+<pre><code class="lang-js"> PlayState.canHeroVsDoor(hero, door) {
+     return this.hasKey &amp;&amp; hero.body.touching.down;
+ }
+</code></pre>
+<p> La collision doit avoir lieu <strong>si</strong> la clé a été ramassée et le héros touche le sol.</p>
+</li>
+<li><p>La collision entre le héros et la porte si les conditions le permettent joue le son et redémarre le niveau.</p>
+<pre><code class="lang-js"> PlayState.onHeroVsDoor = function (hero, door) {
+     this.sfx.door.play();
+     this.game.state.restart();
+     // TODO: go to the next level instead
+ };
+</code></pre>
+<p> Plus tard, il nous faudra passer au niveau suivant.</p>
+</li>
+<li><p>Essayons! Le niveau devrait recommencer.</p>
+</li>
+</ol>
+<h2 id="animer-la-cl-">Animer la clé</h2>
+<ol>
+<li><p>La clé, bien qu&#39;étant l&#39;élément important du jeu est relativement peu visible. Il n&#39;y a pas de feuille de sprite mais il serait bien de pouvoir l&#39;animer quand même. Créons une animation de mouvement.</p>
+<p> Phaser nous permet de faire ceci à l&#39;aide d&#39;un <em>Tween</em> qui vient de l&#39;anglais <em>inbetween</em> signfiant interpolation. La bibliothèque jQuery permet des résultat similaires.</p>
+<pre><code class="lang-js"> PlayState.spawnKey = function (x, y) {
+     // ...
+     this.key.y -= 3;
+     this.game.add.tween(this.key)
+         .to({y: this.key.y + 6}, 800, Phaser.Easing.Sinusoidal.InOut)
+         .yoyo(true)
+         .loop()
+         .start();
+ };
+</code></pre>
+<p> L&#39;interpolation va déplacer la clé de haut en bas dans un mouvement sinusoïdal.</p>
+</li>
+<li><p>La clé devrait à présent osciller de haut en bas de manière non-linéaire.</p>
+<p> <img src="/html5-games-workshop/assets/platformer/key_tween.gif" alt="Key tweening"/></p>
+</li>
+</ol>
+<h2 id="ic-ne">Icône</h2>
+<ol>
+<li><p>Et finalement, nous allons ajouter un clé au <em>HUD</em>. Il nécessaire de charger le sprite.</p>
+<pre><code class="lang-js"> PlayState.preload = function () {
+     // ...
+     this.game.load.spritesheet(&#39;icon:key&#39;, &#39;images/key_icon.png&#39;, 34, 30);
+ }
+</code></pre>
+</li>
+<li><p>Puis de créer l&#39;image et de l&#39;ajouter à l&#39;affichage. <code>19</code> permet de centrer l&#39;image verticalement par rapport à la pièce d&#39;or.</p>
+<pre><code class="lang-js"> PlayState.createHud = function () {
+     this.keyIcon = this.game.make.image(0, 19, &#39;icon:key&#39;);
+     this.keyIcon.anchor.set(0, 0.5);
+     // ...
+     this.hud.add(this.keyIcon);
+ };
+</code></pre>
+</li>
+<li><p>La pièce d&#39;or doit également être décalée vers la droite.</p>
+<pre><code class="lang-js"> PlayState.createHud = function () {
+     // ...
+     var coinIcon = this.game.make.image(this.keyIcon.width + 7, 0, &#39;icon:coin&#39;);
+     // ...
+ };
+</code></pre>
+</li>
+<li><p>En rechargeant la page, la clé s&#39;affiche à côté de la pièce.</p>
+<p> <img src="/html5-games-workshop/assets/platformer/key_icon_empty.png" alt="Key icon (empty frame)"/></p>
+</li>
+<li><p>Dernière étape. Utiliser le bon sprite en fonction de si la clé a été capturée ou non. Un peu comme pour une animation, il est possible de spécifier une image (<code>frame</code>) pour le sprite.</p>
+<pre><code class="lang-js"> PlayState.update = function () {
+     // ...
+     this.keyIcon.frame = this.hasKey ? 1 : 0;
+ };
+</code></pre>
+</li>
+<li><p>Tadaaa!</p>
+<p> <img src="/html5-games-workshop/assets/platformer/key_icon_filled.png" alt="Key icon (filled)"/></p>
+</li>
+</ol>
+<h1 id="v-rifications">Vérifications</h1>
+<ul>
+<li>La porte et la clé sont affichées</li>
+<li>Si le caractère ramasse la clé, elle disparaît et un effet sonore est joué</li>
+<li>Le niveau recommence quand le caractère passe la porte après voir ramassé la clé</li>
+<li>Rien ne se passe si le héros passe la porte sans avoir ramassé la clé</li>
+<li>Il y a un icône indiquant si la clé a été ramassée</li>
+</ul>
+
+        <h2>Téléchargement</h2>
+        <p>Êtes-vous bloqué? Jetez un œil <a href="../../../../assets/platformer/steps/step14.js" télécharger="">au code source</a> de cette étape.
+        </p>
+        <nav class="paginated-nav">
+          <ul>
+            <li class="previous">« Prédédent:&nbsp;<a href="../animer-le-heros">Animer le héros</a></li>
+            <li class="next">Suivant:&nbsp;<a href="../changer-de-niveau">Changer de niveau</a>&nbsp;»</li>
+          </ul>
+        </nav>
+      </article>
+    </main>
+    <footer class="main-footer">
+      <p>Propulsé avec amour,<br/>par les fées de chez <a href="https://mozilla.org">Mozilla</a>.</p>
+    </footer>
+  </body>
+</html>

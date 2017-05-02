@@ -13,6 +13,8 @@
   </header>
   <main>
     <article>
+      <p>Also available in <a href="../../../../fr/guides/plateforme/changer-de-niveau">fr</a>.
+      </p>
       <h1>Switching levels</h1><p>We have the win condition in place, but right now the only thing it does is restarting the current level… which is no fun! If you look into the <code>data</code> directory of the game, you will see that there are two JSON files: <code>level00.json</code> and <code>level01.json</code>.</p>
 <p>What we are going to do is to <strong>start the game</strong> at level <code>#0</code>, and then switch to <code>#1</code> when <code>#0</code> is completed. Once the last level (in this case, <code>#1</code>) we should present some kind of &quot;game completed&quot; screen, but unfortunately that is out of the scope of this guide. What we would to instead is to <strong>restart the whole game from the beginning</strong>.</p>
 <p>And remember that, even though there are only two levels already pre-made, <strong>you can build your own</strong> by adding more JSON files!</p>
